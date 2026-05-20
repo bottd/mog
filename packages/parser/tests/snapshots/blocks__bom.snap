@@ -1,0 +1,15 @@
+---
+source: packages/parser/tests/blocks.rs
+expression: bare
+---
+Ok:
+  meta: ~
+  body:
+    - Marker:
+        kind: Heading
+        depth: 1
+        scope: Inline
+        attributes: []
+        children:
+          - Text:
+              value: My heading

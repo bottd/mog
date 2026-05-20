@@ -1,0 +1,20 @@
+---
+source: packages/parser/tests/blocks.rs
+expression: examples.map(parse)
+---
+- Ok:
+    meta:
+      - - title
+        - args:
+            - My Document
+      - - authors
+        - args:
+            - John
+            - Jane
+      - - date
+        - args:
+            - 2026-04-15
+      - - version
+        - args:
+            - 1
+    body: []
