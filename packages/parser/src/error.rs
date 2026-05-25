@@ -6,6 +6,7 @@ pub enum MogError {
     Simple(char),
     Kdl(String),
     IntegerOverflow(i128),
+    TaskOnThematicBreak,
 }
 
 impl From<KdlError> for MogError {

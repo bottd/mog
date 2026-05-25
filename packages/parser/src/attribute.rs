@@ -3,11 +3,13 @@ use std::collections::BTreeMap;
 use serde::Serialize;
 use serde_value::Value;
 
+use crate::janet::parse_janet;
+
 #[derive(Debug, Serialize, PartialEq)]
 pub enum Attribute {
     String(String),
     Table(BTreeMap<Value, Value>),
-    List(Vec<Value>),
+    List(String),
 }
 
 #[inline]
@@ -30,11 +32,9 @@ pub fn parse_attribute<'a>(src: &'a str, attributes: &mut Vec<Attribute>) -> &'a
     match src.bytes().next() {
         Some(byte) => {
             if byte.is_ascii_whitespace() {
-                return src;
-            } else if byte == b'[' {
-                return parse_list(src, attributes);
-            } else if byte == b'{' {
-                return parse_list(src, attributes);
+                src
+            } else if byte == b'[' || byte == b'{' {
+                parse_janet(src, attributes)
             } else {
                 match src.split_once(':') {
                     Some((left, right)) => {
@@ -42,22 +42,13 @@ pub fn parse_attribute<'a>(src: &'a str, attributes: &mut Vec<Attribute>) -> &'a
                             return src;
                         }
                         attributes.push(Attribute::String(left.to_string()));
-                        return parse_attribute(right, attributes);
+                        parse_attribute(right, attributes)
                     }
-                    None => return src,
+                    _ => src,
                 }
             }
         }
-        None => {
-            return src;
-        }
-    };
+        _ => src,
+    }
 }
 
-pub fn parse_list<'a>(src: &'a str, attributes: &mut Vec<Attribute>) -> &'a str {
-    todo!();
-}
-
-pub fn parse_table<'a>(src: &'a str, attributes: &mut Vec<Attribute>) -> &'a str {
-    todo!();
-}

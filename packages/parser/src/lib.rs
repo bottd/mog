@@ -5,6 +5,7 @@ use crate::lexer::lexer;
 
 mod attribute;
 mod error;
+mod janet;
 mod lexer;
 mod marker;
 mod metadata;

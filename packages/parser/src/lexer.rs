@@ -34,13 +34,17 @@ pub fn lexer(src: &str) -> Result<Document, MogError> {
     }
 
     for line in lines {
-        document.body.extend(parse_line(line))
+        // TODO: line-level error handling
+        // this just skips error lines
+        if let Ok(parsed) = parse_line(line) {
+            document.body.extend(parsed);
+        }
     }
 
     Ok(document)
 }
 
-pub fn parse_line(line: &str) -> Vec<Node> {
+pub fn parse_line(line: &str) -> Result<Vec<Node>, MogError> {
     let mut nodes: Vec<Node> = Vec::new();
     let line = line.trim();
 
@@ -52,6 +56,9 @@ pub fn parse_line(line: &str) -> Vec<Node> {
 
             let (attributes, mut rest) = parse_attributes(&line[depth..]);
             if let Some((task, _rest)) = parse_task(rest) {
+                if kind == StructuralMarker::ThematicBreak {
+                    return Err(MogError::TaskOnThematicBreak);
+                }
                 children.push(task);
                 rest = _rest;
             }
@@ -76,8 +83,8 @@ pub fn parse_line(line: &str) -> Vec<Node> {
             }))
         }
     } else {
-        return nodes;
+        return Ok(nodes);
     }
 
-    nodes
+    Ok(nodes)
 }
