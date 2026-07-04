@@ -5,29 +5,35 @@ expression: examples.map(parse)
 - Ok:
     meta: ~
     body:
-      - Marker:
-          kind: Heading
-          depth: 2
-          scope: Inline
-          attributes:
-            - String: red
-          children:
-            - Text:
-                value: My Heading
-      - Marker:
-          kind: Heading
-          depth: 2
-          scope: Inline
-          attributes:
-            - String: red
-          children:
-            - Text:
-                value: My Heading
-      - Marker:
-          kind: UnorderedList
-          depth: 1
-          scope: Inline
-          attributes: []
-          children:
-            - Text:
-                value: "list item with **red: BOLD** content"
+      - kind:
+          Marker:
+            depth: 2
+            kind: Heading
+        attributes:
+          - String: red
+        children:
+          - kind:
+              Raw: My Heading
+            attributes: ~
+            children: ~
+      - kind:
+          Marker:
+            depth: 2
+            kind: Heading
+        attributes:
+          - String: red
+        children:
+          - kind:
+              Raw: " My Heading"
+            attributes: ~
+            children: ~
+      - kind:
+          Marker:
+            depth: 1
+            kind: UnorderedList
+        attributes: ~
+        children:
+          - kind:
+              Raw: " list item with **red: BOLD** content"
+            attributes: ~
+            children: ~

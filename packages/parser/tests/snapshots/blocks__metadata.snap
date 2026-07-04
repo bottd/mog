@@ -1,20 +1,14 @@
 ---
 source: packages/parser/tests/blocks.rs
+assertion_line: 42
 expression: examples.map(parse)
 ---
 - Ok:
-    meta:
-      - - title
-        - args:
-            - My Document
-      - - authors
-        - args:
-            - John
-            - Jane
-      - - date
-        - args:
-            - 2026-04-15
-      - - version
-        - args:
-            - 1
-    body: []
+    meta: ~
+    body:
+      - kind:
+          Marker:
+            depth: 2
+            kind: UnorderedList
+        attributes: ~
+        children: ~

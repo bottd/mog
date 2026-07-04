@@ -5,11 +5,13 @@ expression: plain
 Ok:
   meta: ~
   body:
-    - Marker:
-        kind: Heading
-        depth: 1
-        scope: Inline
-        attributes: []
-        children:
-          - Text:
-              value: My heading
+    - kind:
+        Marker:
+          depth: 1
+          kind: Heading
+      attributes: ~
+      children:
+        - kind:
+            Raw: " My heading"
+          attributes: ~
+          children: ~

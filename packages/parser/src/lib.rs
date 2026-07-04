@@ -1,16 +1,13 @@
 pub use error::MogError;
 pub use node::{Document, Node};
 
-use crate::lexer::lexer;
+use crate::blocks::parse_blocks;
 
-mod attribute;
+mod blocks;
 mod error;
-mod janet;
-mod lexer;
-mod marker;
 mod metadata;
 mod node;
 
 pub fn parse(src: &str) -> Result<Document, MogError> {
-    lexer(src)
+    parse_blocks(src)
 }
