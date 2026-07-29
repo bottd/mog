@@ -5,12 +5,14 @@ input_file: packages/parser/tests/fixtures/footnotes-2.mg
 ---
 meta: ~
 body:
-  - kind:
-      Text: A good marinara starts with San Marzano tomato
-  - kind:
-      Delimiter: Footnote
+  - kind: Paragraph
     children:
       - kind:
-          Text: A tomato is a fruit not a vegetable
-  - kind:
-      Text: " and a generous amount of olive oil."
+          Text: A good marinara starts with San Marzano tomato
+      - kind:
+          Delimiter: Footnote
+        children:
+          - kind:
+              Text: A tomato is a fruit not a vegetable
+      - kind:
+          Text: " and a generous amount of olive oil."

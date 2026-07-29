@@ -96,7 +96,11 @@ impl Parser {
         };
 
         let node = match accumulator {
-            Accumulator::Paragraph(text) => Node::raw(text),
+            Accumulator::Paragraph(text) => Node {
+                kind: NodeKind::Paragraph,
+                attributes: None,
+                children: Some(vec![Node::raw(text)]),
+            },
             Accumulator::Table(rows) => Node {
                 kind: NodeKind::Table,
                 attributes: None,

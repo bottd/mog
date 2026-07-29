@@ -10,8 +10,10 @@ body:
         depth: 1
         kind: UnorderedList
     children:
-      - kind:
-          Text: A list item
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: A list item
       - kind:
           Delimiter: Verbatim
         attributes:

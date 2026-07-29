@@ -5,24 +5,30 @@ input_file: packages/parser/tests/fixtures/semantic-delimiters.mg
 ---
 meta: ~
 body:
-  - kind:
-      Text: "The quick brown fox jumped over the "
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "The quick brown fox jumped over the "
+      - kind:
+          Delimiter: Strong
+        children:
+          - kind:
+              Text: lazy dog.
   - kind:
       Delimiter: Strong
     children:
-      - kind:
-          Text: lazy dog.
-  - kind:
-      Delimiter: Strong
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: The quick brown fox jumped over the lazy dog.
+  - kind: Paragraph
     children:
       - kind:
-          Text: The quick brown fox jumped over the lazy dog.
-  - kind:
-      Text: "A paragraph "
-  - kind:
-      Delimiter: Strong
-    children:
+          Text: "A paragraph "
       - kind:
-          Text: with soft wrapping
-  - kind:
-      Text: " in it."
+          Delimiter: Strong
+        children:
+          - kind:
+              Text: with soft wrapping
+      - kind:
+          Text: " in it."

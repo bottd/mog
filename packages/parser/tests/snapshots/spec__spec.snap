@@ -9,8 +9,10 @@ body:
         depth: 2
         kind: UnorderedList
     children:
-      - kind:
-          Text: "title \"Mog Syntax Specification\" authors \"Drake Bott\" version 0.1"
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: "title \"Mog Syntax Specification\" authors \"Drake Bott\" version 0.1"
   - kind:
       Marker:
         depth: 1
@@ -25,8 +27,10 @@ body:
     children:
       - kind:
           Text: Introduction
-  - kind:
-      Text: "Mog is a markup syntax designed for rich, interconnected documents: knowledge bases, wikis, and publishing on the web. It draws from Markdown, Org, and Neorg, but diverges with two-character delimiters, explicit nesting, and inline attributes. Together these create a unified grammar for expression. This document specifies the structure and rules for markup in a Mog document."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Mog is a markup syntax designed for rich, interconnected documents: knowledge bases, wikis, and publishing on the web. It draws from Markdown, Org, and Neorg, but diverges with two-character delimiters, explicit nesting, and inline attributes. Together these create a unified grammar for expression. This document specifies the structure and rules for markup in a Mog document."
   - kind:
       Marker:
         depth: 2
@@ -115,15 +119,17 @@ body:
     children:
       - kind:
           Text: 1.1 Text Encoding
-  - kind:
-      Text: "Documents are UTF-8 encoded files with a "
-  - kind:
-      Delimiter: Verbatim
+  - kind: Paragraph
     children:
       - kind:
-          Raw: ".mg"
-  - kind:
-      Text: " file extension. A leading byte-order mark (U+FEFF) is stripped by the parser and not considered document content. Line endings can be LF (U+000A) or CRLF (U+000D U+000A), parsing normalizes to LF."
+          Text: "Documents are UTF-8 encoded files with a "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: ".mg"
+      - kind:
+          Text: " file extension. A leading byte-order mark (U+FEFF) is stripped by the parser and not considered document content. Line endings can be LF (U+000A) or CRLF (U+000D U+000A), parsing normalizes to LF."
   - kind:
       Marker:
         depth: 3
@@ -131,8 +137,10 @@ body:
     children:
       - kind:
           Text: 1.2 Whitespace
-  - kind:
-      Text: "The following Unicode characters are considered whitespace:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "The following Unicode characters are considered whitespace:"
   - kind:
       Marker:
         depth: 1
@@ -147,8 +155,10 @@ body:
     children:
       - kind:
           Text: Space (0x20)
-  - kind:
-      Text: "Whitespace is not used to structure Mog. Leading and trailing whitespace is trimmed when parsing a document. The following headings parse identically:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Whitespace is not used to structure Mog. Leading and trailing whitespace is trimmed when parsing a document. The following headings parse identically:"
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -165,8 +175,10 @@ body:
     children:
       - kind:
           Text: 1.3 Paragraphs
-  - kind:
-      Text: "A paragraph is a continuous sequence of text lines. Paragraphs are terminated by a blank line, structural marker, or the end of the document. Line breaks within a paragraph are parsed as soft wraps."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "A paragraph is a continuous sequence of text lines. Paragraphs are terminated by a blank line, structural marker, or the end of the document. Line breaks within a paragraph are parsed as soft wraps."
   - kind:
       Marker:
         depth: 3
@@ -174,22 +186,24 @@ body:
     children:
       - kind:
           Text: 1.4 Metadata
-  - kind:
-      Text: "Metadata may appear at the beginning of a document, delimited by two hyphens. Data is formatted in "
-  - kind:
-      Delimiter: Link
-    attributes:
-      - value: https
+  - kind: Paragraph
     children:
       - kind:
-          Text: //kdl.dev
-  - kind:
-      Delimiter: LinkName
-    children:
+          Text: "Metadata may appear at the beginning of a document, delimited by two hyphens. Data is formatted in "
       - kind:
-          Text: KDL
-  - kind:
-      Text: " syntax:"
+          Delimiter: Link
+        attributes:
+          - value: https
+        children:
+          - kind:
+              Text: //kdl.dev
+      - kind:
+          Delimiter: LinkName
+        children:
+          - kind:
+              Text: KDL
+      - kind:
+          Text: " syntax:"
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -214,8 +228,10 @@ body:
     children:
       - kind:
           Text: 1.5 Escape Sequences
-  - kind:
-      Text: "A backslash immediately preceding a delimiter or structural marker escapes it, rendering the delimiter or marker literal. A backslash in any other position is itself literal and requires no escaping."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "A backslash immediately preceding a delimiter or structural marker escapes it, rendering the delimiter or marker literal. A backslash in any other position is itself literal and requires no escaping."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -230,22 +246,24 @@ body:
     children:
       - kind:
           Text: 2 Structural Markers
-  - kind:
-      Text: "Structural markers are used to give documents structure. These markers open the line they are used on, ignoring leading whitespace. Structural markers are repeated to explicitly indicate nesting. Using a heading "
-  - kind:
-      Delimiter: Verbatim
+  - kind: Paragraph
     children:
       - kind:
-          Raw: "#"
-  - kind:
-      Text: " marker once is a top-level heading, two markers "
-  - kind:
-      Delimiter: Verbatim
-    children:
+          Text: "Structural markers are used to give documents structure. These markers open the line they are used on, ignoring leading whitespace. Structural markers are repeated to explicitly indicate nesting. Using a heading "
       - kind:
-          Raw: "##"
-  - kind:
-      Text: " represent a subheading and so on. These rules apply to all structural markers."
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "#"
+      - kind:
+          Text: " marker once is a top-level heading, two markers "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "##"
+      - kind:
+          Text: " represent a subheading and so on. These rules apply to all structural markers."
   - kind: Table
     children:
       - kind:
@@ -371,8 +389,10 @@ body:
             children:
               - kind:
                   Text: Thematic break
-  - kind:
-      Text: An optional whitespace character can be placed between a marker and content. This whitespace is trimmed when present.
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: An optional whitespace character can be placed between a marker and content. This whitespace is trimmed when present.
   - kind:
       Marker:
         depth: 3
@@ -380,8 +400,10 @@ body:
     children:
       - kind:
           Text: 2.1 Nesting
-  - kind:
-      Text: "All structural markers can nest. Nesting is expressed through marker repetition. A repeated marker indicates a sub-entity:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "All structural markers can nest. Nesting is expressed through marker repetition. A repeated marker indicates a sub-entity:"
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -404,8 +426,10 @@ body:
     children:
       - kind:
           Text: 2.2 Blocks
-  - kind:
-      Text: "Structured text can span multiple lines. A structural marker alone on a line with no content opens a block of its type, terminated with a matching marker of the same depth on its own line."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Structured text can span multiple lines. A structural marker alone on a line with no content opens a block of its type, terminated with a matching marker of the same depth on its own line."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -425,8 +449,10 @@ body:
           Raw: " >"
       - kind:
           Raw: "--"
-  - kind:
-      Text: "Leading whitespace is trimmed while parsing structural markers. Authors can use it to visually group text without affecting nesting depth. The following block is equivalent to the above example:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Leading whitespace is trimmed while parsing structural markers. Authors can use it to visually group text without affecting nesting depth. The following block is equivalent to the above example:"
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -453,22 +479,24 @@ body:
     children:
       - kind:
           Text: 2.3 Tasks
-  - kind:
-      Text: "A task marker can be placed after any structural marker except "
-  - kind:
-      Delimiter: Verbatim
+  - kind: Paragraph
     children:
       - kind:
-          Raw: "="
-  - kind:
-      Text: " thematic breaks. Tasks are marked using square brackets: "
-  - kind:
-      Delimiter: Verbatim
-    children:
+          Text: "A task marker can be placed after any structural marker except "
       - kind:
-          Raw: "[ ]"
-  - kind:
-      Text: ". The status of a task is determined by the character between brackets."
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "="
+      - kind:
+          Text: " thematic breaks. Tasks are marked using square brackets: "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "[ ]"
+      - kind:
+          Text: ". The status of a task is determined by the character between brackets."
   - kind: Table
     children:
       - kind:
@@ -606,10 +634,14 @@ body:
     children:
       - kind:
           Text: 3 Attributes
-  - kind:
-      Text: "Attributes are generic data attached to a marker or delimiter, terminated using a colon. After the colon an optional whitespace character is trimmed if present."
-  - kind:
-      Text: "Attribute names may contain any character except whitespace and the following reserved characters:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Attributes are generic data attached to a marker or delimiter, terminated using a colon. After the colon an optional whitespace character is trimmed if present."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Attribute names may contain any character except whitespace and the following reserved characters:"
   - kind:
       Marker:
         depth: 1
@@ -766,8 +798,10 @@ body:
               Raw: "~"
       - kind:
           Text: " (0x7E)"
-  - kind:
-      Text: "All other printable characters, including digits and Unicode letters, are permitted."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "All other printable characters, including digits and Unicode letters, are permitted."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -788,8 +822,10 @@ body:
     children:
       - kind:
           Text: 3.1 Attribute Chains
-  - kind:
-      Text: Additional attributes are added as a chain beginning from the terminating colon of the prior attribute. Attribute chains must stay on the same line as their parent. A newline or whitespace character marks the beginning of text content.
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: Additional attributes are added as a chain beginning from the terminating colon of the prior attribute. Attribute chains must stay on the same line as their parent. A newline or whitespace character marks the beginning of text content.
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -804,22 +840,24 @@ body:
     children:
       - kind:
           Text: 3.2 Data Attributes
-  - kind:
-      Text: "Where an attribute flag is not enough, attributes can be structured using "
-  - kind:
-      Delimiter: Link
-    attributes:
-      - value: https
+  - kind: Paragraph
     children:
       - kind:
-          Text: //janet-lang.org
-  - kind:
-      Delimiter: LinkName
-    children:
+          Text: "Where an attribute flag is not enough, attributes can be structured using "
       - kind:
-          Text: Janet
-  - kind:
-      Text: " table or list syntax."
+          Delimiter: Link
+        attributes:
+          - value: https
+        children:
+          - kind:
+              Text: //janet-lang.org
+      - kind:
+          Delimiter: LinkName
+        children:
+          - kind:
+              Text: Janet
+      - kind:
+          Text: " table or list syntax."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -836,8 +874,10 @@ body:
     children:
       - kind:
           Text: 4 Semantic Delimiters
-  - kind:
-      Text: "Semantic delimiters are used both inline and as blocks. All delimiters open and close with two characters. Delimiters of different kinds can nest, but delimiters cannot nest within themselves. Leading and trailing whitespace is trimmed within semantic delimiters."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Semantic delimiters are used both inline and as blocks. All delimiters open and close with two characters. Delimiters of different kinds can nest, but delimiters cannot nest within themselves. Leading and trailing whitespace is trimmed within semantic delimiters."
   - kind: Table
     children:
       - kind:
@@ -1096,8 +1136,10 @@ body:
     children:
       - kind:
           Text: 4.1 Verbatim
-  - kind:
-      Text: "Text between verbatim delimiters is preserved literally. To indicate a syntax for highlighting when rendered, a lang attribute is attached to the marker or delimiter."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Text between verbatim delimiters is preserved literally. To indicate a syntax for highlighting when rendered, a lang attribute is attached to the marker or delimiter."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1115,8 +1157,10 @@ body:
           Raw: "    print(f\"Hello, {name}!\")"
       - kind:
           Raw: "``"
-  - kind:
-      Text: Each line of a verbatim block is dedented by the whitespace preceding the opening verbatim delimiter.
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: Each line of a verbatim block is dedented by the whitespace preceding the opening verbatim delimiter.
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1136,8 +1180,10 @@ body:
           Raw: "  ``"
       - kind:
           Raw: "-"
-  - kind:
-      Text: "When parsed, the verbatim text is dedented:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "When parsed, the verbatim text is dedented:"
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1154,29 +1200,31 @@ body:
     children:
       - kind:
           Text: 4.2 Tables
-  - kind:
-      Text: "Tables are constructed using "
-  - kind:
-      Delimiter: Verbatim
+  - kind: Paragraph
     children:
       - kind:
-          Raw: "#|"
-  - kind:
-      Text: " table header and "
-  - kind:
-      Delimiter: Verbatim
-    children:
+          Text: "Tables are constructed using "
       - kind:
-          Raw: "-|"
-  - kind:
-      Text: " table row delimiters. Within a row, cells are delimited using "
-  - kind:
-      Delimiter: Verbatim
-    children:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "#|"
       - kind:
-          Raw: "||"
-  - kind:
-      Text: ". Table cells can include semantic delimiters for presentation of tabulated data. A table is terminated by an empty line."
+          Text: " table header and "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "-|"
+      - kind:
+          Text: " table row delimiters. Within a row, cells are delimited using "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "||"
+      - kind:
+          Text: ". Table cells can include semantic delimiters for presentation of tabulated data. A table is terminated by an empty line."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1190,8 +1238,10 @@ body:
           Raw: "-| **Carrot** || Vegetable || Orange   ||"
       - kind:
           Raw: "-| Blueberry  || Fruit     || Blue     ||"
-  - kind:
-      Text: Table rows may share a line.
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: Table rows may share a line.
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1199,8 +1249,10 @@ body:
     children:
       - kind:
           Raw: "#| Name || Type || Color || -| Banana || Fruit || Yellow ||"
-  - kind:
-      Text: Table rows are not required to have the same number of cells. The number of columns in a table is determined by the row with the most cells. Missing cells are parsed as empty. Implementations may warn on row length mismatch.
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: Table rows are not required to have the same number of cells. The number of columns in a table is determined by the row with the most cells. Missing cells are parsed as empty. Implementations may warn on row length mismatch.
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1214,8 +1266,10 @@ body:
           Raw: "-| Carrot     || Vegetable || Orange   || Crunchy ||"
       - kind:
           Raw: "-| Blueberry  || Fruit     || Blue     ||"
-  - kind:
-      Text: "Tables may begin without a header:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Tables may begin without a header:"
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1227,8 +1281,10 @@ body:
           Raw: "-| Carrot     || Vegetable || Orange   || Crunchy ||"
       - kind:
           Raw: "-| Blueberry  || Fruit     || Blue     ||"
-  - kind:
-      Text: "A table may have multiple or mid-table header rows:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "A table may have multiple or mid-table header rows:"
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1253,29 +1309,31 @@ body:
     children:
       - kind:
           Text: 4.3 Links
-  - kind:
-      Text: "Links "
-  - kind:
-      Delimiter: Verbatim
+  - kind: Paragraph
     children:
       - kind:
-          Raw: "[[  ]]"
-  - kind:
-      Text: " are formatted with square brackets. A link can be bare, or it may have a name "
-  - kind:
-      Delimiter: Verbatim
-    children:
+          Text: "Links "
       - kind:
-          Raw: ((  ))
-  - kind:
-      Text: " and footnote "
-  - kind:
-      Delimiter: Verbatim
-    children:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "[[  ]]"
       - kind:
-          Raw: "{{  }}"
-  - kind:
-      Text: "."
+          Text: " are formatted with square brackets. A link can be bare, or it may have a name "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: ((  ))
+      - kind:
+          Text: " and footnote "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "{{  }}"
+      - kind:
+          Text: "."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1287,22 +1345,24 @@ body:
           Raw: "- [[https://kdl.dev]]((KDL))"
       - kind:
           Raw: "- [[https://kdl.dev]]((KDL)){{ A node-based document language }}"
-  - kind:
-      Text: "Link resolution is driven by attributes. A bare link is a document reference and is resolved against filenames and metadata "
-  - kind:
-      Delimiter: Verbatim
+  - kind: Paragraph
     children:
       - kind:
-          Raw: title
-  - kind:
-      Text: " fields. Headings can be referenced using the "
-  - kind:
-      Delimiter: Verbatim
-    children:
+          Text: "Link resolution is driven by attributes. A bare link is a document reference and is resolved against filenames and metadata "
       - kind:
-          Raw: "#"
-  - kind:
-      Text: " attribute. External targets are identified by their protocol attribute."
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: title
+      - kind:
+          Text: " fields. Headings can be referenced using the "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "#"
+      - kind:
+          Text: " attribute. External targets are identified by their protocol attribute."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1314,15 +1374,17 @@ body:
           Raw: "[[#:Ingredients]]        Heading in current document"
       - kind:
           Raw: "[[https://kdl.dev]]      External via protocol attribute"
-  - kind:
-      Text: "Link transclusion is indicated using the transclude "
-  - kind:
-      Delimiter: Verbatim
+  - kind: Paragraph
     children:
       - kind:
-          Raw: "!"
-  - kind:
-      Text: " attribute. Transclusion works for both documents and media."
+          Text: "Link transclusion is indicated using the transclude "
+      - kind:
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "!"
+      - kind:
+          Text: " attribute. Transclusion works for both documents and media."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1339,8 +1401,10 @@ body:
     children:
       - kind:
           Text: 4.4 Footnotes
-  - kind:
-      Text: "When footnote contents do not fit inline, they may be linked from elsewhere in the document:"
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "When footnote contents do not fit inline, they may be linked from elsewhere in the document:"
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1356,8 +1420,10 @@ body:
           Raw: ""
       - kind:
           Raw: "[[tomato]]{{ A fruit not a vegetable }}"
-  - kind:
-      Text: "Footnotes can appear without a link. If unattached, a footnote is indexed by its position in the document."
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Footnotes can appear without a link. If unattached, a footnote is indexed by its position in the document."
   - kind:
       Delimiter: Verbatim
     attributes:

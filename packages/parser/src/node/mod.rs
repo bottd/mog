@@ -15,6 +15,7 @@ pub enum NodeKind {
     Delimiter(Delimiter),
     Data(Vec<Data>),
     Raw(String),
+    Paragraph,
     Table,
     Text(String),
 }

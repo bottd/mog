@@ -10,5 +10,7 @@ body:
         depth: 2
         kind: UnorderedList
     children:
-      - kind:
-          Text: "title \"My Document\" authors \"John\" \"Jane\" date \"2026-04-15\" version 1"
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: "title \"My Document\" authors \"John\" \"Jane\" date \"2026-04-15\" version 1"

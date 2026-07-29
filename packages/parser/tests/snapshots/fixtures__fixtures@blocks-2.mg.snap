@@ -17,12 +17,16 @@ body:
         depth: 2
         kind: UnorderedList
     children:
-      - kind:
-          Text: "Chapter 3 was particularly relevant:"
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: "Chapter 3 was particularly relevant:"
       - kind:
           Marker:
             depth: 1
             kind: Blockquote
         children:
-          - kind:
-              Text: quote from chapter 3
+          - kind: Paragraph
+            children:
+              - kind:
+                  Text: quote from chapter 3

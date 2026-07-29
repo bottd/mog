@@ -5,21 +5,23 @@ input_file: packages/parser/tests/fixtures/links-3.mg
 ---
 meta: ~
 body:
-  - kind:
-      Delimiter: Link
-    attributes:
-      - value: "!"
+  - kind: Paragraph
     children:
       - kind:
-          Text: recipe
-  - kind:
-      Text: "       Document Transclusion "
-  - kind:
-      Delimiter: Link
-    attributes:
-      - value: "!"
-    children:
+          Delimiter: Link
+        attributes:
+          - value: "!"
+        children:
+          - kind:
+              Text: recipe
       - kind:
-          Text: image.png
-  - kind:
-      Text: "    Image Transclusion"
+          Text: "       Document Transclusion "
+      - kind:
+          Delimiter: Link
+        attributes:
+          - value: "!"
+        children:
+          - kind:
+              Text: image.png
+      - kind:
+          Text: "    Image Transclusion"

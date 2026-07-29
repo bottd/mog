@@ -5,15 +5,17 @@ input_file: packages/parser/tests/fixtures/verbatim-1.mg
 ---
 meta: ~
 body:
-  - kind:
-      Text: "Some code with "
-  - kind:
-      Delimiter: Verbatim
-    attributes:
-      - value: python
+  - kind: Paragraph
     children:
       - kind:
-          Raw: "print(\"Hello, world!\")"
+          Text: "Some code with "
+      - kind:
+          Delimiter: Verbatim
+        attributes:
+          - value: python
+        children:
+          - kind:
+              Raw: "print(\"Hello, world!\")"
   - kind:
       Delimiter: Verbatim
     attributes:

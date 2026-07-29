@@ -5,27 +5,31 @@ input_file: packages/parser/tests/fixtures/footnotes-1.mg
 ---
 meta: ~
 body:
-  - kind:
-      Text: "A good marinara starts with San Marzano "
-  - kind:
-      Delimiter: Link
+  - kind: Paragraph
     children:
       - kind:
-          Text: tomato
-  - kind:
-      Delimiter: LinkName
+          Text: "A good marinara starts with San Marzano "
+      - kind:
+          Delimiter: Link
+        children:
+          - kind:
+              Text: tomato
+      - kind:
+          Delimiter: LinkName
+        children:
+          - kind:
+              Text: tomatoes
+      - kind:
+          Text: " and a generous amount of olive oil."
+  - kind: Paragraph
     children:
       - kind:
-          Text: tomatoes
-  - kind:
-      Text: " and a generous amount of olive oil."
-  - kind:
-      Delimiter: Link
-    children:
+          Delimiter: Link
+        children:
+          - kind:
+              Text: tomato
       - kind:
-          Text: tomato
-  - kind:
-      Delimiter: Footnote
-    children:
-      - kind:
-          Text: A fruit not a vegetable
+          Delimiter: Footnote
+        children:
+          - kind:
+              Text: A fruit not a vegetable
