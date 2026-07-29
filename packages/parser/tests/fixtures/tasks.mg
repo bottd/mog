@@ -1,0 +1,7 @@
+- [~] Grocery shopping
+-- [x] Eggs
+-- [~] Milk
+-- [?] Oat or almond?
+- [ ] Clean kitchen
+- [!] Call dentist
+- [-] Return sweater

@@ -1,0 +1,17 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/attribute-chains.mg
+---
+meta: ~
+body:
+  - kind:
+      Marker:
+        depth: 2
+        kind: Heading
+    attributes:
+      - value: red
+      - value: underline
+    children:
+      - kind:
+          Text: My Heading

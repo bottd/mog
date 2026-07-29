@@ -229,7 +229,6 @@ whitespace is trimmed within semantic delimiters.
 -| ``__``         || italic          || Italic              ||
 -| `` `` ``       || verbatim        || Literal text        ||
 -| ``~~``         || strikethrough   || Struck-through text ||
--| ``$$``         || math            || Math expression     ||
 -| ``#|``         || table-header    || Table header        ||
 -| ``-|``         || table-row       || Table row           ||
 -| ``||``         || table-cell      || Table cell          ||
@@ -249,21 +248,7 @@ soft wrapping** in
 it.
 ``
 
-### 4.1 Math
-
-Text contained within math delimiters is treated as verbatim, but
-evaluated as [[https://typst.app/docs/reference/math/]]((Typst)) math
-when rendered.
-
-``mog:
-Einstein's famous equation $$E = m c^2$$ changed physics.
-
-$$
-E^2 = (m c^2)^2 + (p c)^2
-$$
-``
-
-### 4.2 Verbatim
+### 4.1 Verbatim
 
 Text between verbatim delimiters is preserved literally. To indicate a
 syntax for highlighting when rendered, a lang attribute is attached to
@@ -298,7 +283,7 @@ def greet(name):
   print(f"Hello, {name}!")
 ``
 
-### 4.3 Tables
+### 4.2 Tables
 
 Tables are constructed using ``#|`` table header and ``-|`` table row
 delimiters. Within a row, cells are delimited using ``||``. Table cells
@@ -349,7 +334,7 @@ A table may have multiple or mid-table header rows:
 -| Carrot     || Vegetable || Orange   || Crunchy ||
 ``
 
-### 4.4 Links
+### 4.3 Links
 
 Links ``[[  ]]`` are formatted with square brackets. A link can be bare,
 or it may have a name ``((  ))`` and footnote ``{{  }}``.
@@ -379,7 +364,7 @@ Transclusion works for both documents and media.
 [[!:image.png]]    Image Transclusion
 ``
 
-### 4.5 Footnotes
+### 4.4 Footnotes
 
 When footnote contents do not fit inline, they may be linked from
 elsewhere in the document:

@@ -1,0 +1,30 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/links-2.mg
+---
+meta: ~
+body:
+  - kind:
+      Delimiter: Link
+    children:
+      - kind:
+          Text: recipe
+  - kind:
+      Text: "               Document reference "
+  - kind:
+      Delimiter: Link
+    children:
+      - kind:
+          Text: "#:Ingredients"
+  - kind:
+      Text: "        Heading in current document "
+  - kind:
+      Delimiter: Link
+    attributes:
+      - value: https
+    children:
+      - kind:
+          Text: //kdl.dev
+  - kind:
+      Text: "      External via protocol attribute"

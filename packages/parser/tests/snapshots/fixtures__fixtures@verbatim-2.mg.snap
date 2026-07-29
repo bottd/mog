@@ -1,0 +1,23 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/verbatim-2.mg
+---
+meta: ~
+body:
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: A list item
+      - kind:
+          Delimiter: Verbatim
+        attributes:
+          - value: python
+        children:
+          - kind:
+              Raw: "def greet(name):"
+          - kind:
+              Raw: "  print(f\"Hello, {name}!\")"

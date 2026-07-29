@@ -1,0 +1,42 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/nesting.mg
+---
+meta: ~
+body:
+  - kind:
+      Marker:
+        depth: 1
+        kind: Heading
+    children:
+      - kind:
+          Text: Heading 1
+  - kind:
+      Marker:
+        depth: 2
+        kind: Heading
+    children:
+      - kind:
+          Text: Heading 2
+  - kind:
+      Marker:
+        depth: 3
+        kind: Heading
+    children:
+      - kind:
+          Text: Heading 3
+  - kind:
+      Marker:
+        depth: 2
+        kind: Heading
+    children:
+      - kind:
+          Text: Heading 2 with leading whitespace
+  - kind:
+      Marker:
+        depth: 1
+        kind: Heading
+    children:
+      - kind:
+          Text: Heading 1 with leading whitespace

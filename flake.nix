@@ -48,6 +48,19 @@
           formatting = treefmtEval.config.build.check ./.;
           inherit pre-commit-check;
         };
+
+        devShells.default = pkgs.mkShell {
+          name = "mog";
+
+          packages = with pkgs; [
+            cargo
+            rustc
+            rustfmt
+            rust-analyzer
+            clippy
+            treefmtEval.config.build.wrapper
+          ];
+        };
       }
     );
 }

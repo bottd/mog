@@ -1,0 +1,56 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/tasks.mg
+---
+meta: ~
+body:
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: "[~] Grocery shopping"
+  - kind:
+      Marker:
+        depth: 2
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: "[x] Eggs"
+  - kind:
+      Marker:
+        depth: 2
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: "[~] Milk"
+  - kind:
+      Marker:
+        depth: 2
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: "[?] Oat or almond?"
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: "[ ] Clean kitchen"
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: "[!] Call dentist"
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: "[-] Return sweater"

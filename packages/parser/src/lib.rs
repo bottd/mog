@@ -1,13 +1,37 @@
-pub use error::MogError;
-pub use node::{Document, Node};
+pub use node::data::{Data, Value};
+pub use node::delimiter::Delimiter;
+pub use node::marker::{Marker, MarkerKind};
+pub use node::{Node, NodeKind};
 
-use crate::blocks::parse_blocks;
+use serde::Serialize;
 
-mod blocks;
-mod error;
-mod metadata;
+use crate::block::parse_blocks;
+use crate::inline::parse_inlines;
+use crate::node::DataArgument;
+
+mod block;
+mod inline;
 mod node;
+mod whitespace;
 
-pub fn parse(src: &str) -> Result<Document, MogError> {
-    parse_blocks(src)
+#[derive(Debug, Serialize, PartialEq)]
+pub struct Document {
+    pub meta: Option<Vec<Data>>,
+    pub body: Vec<Node>,
+}
+
+pub fn parse(src: &str) -> Document {
+    let mut nodes = parse_blocks(src);
+
+    let meta = nodes
+        .first()
+        .and_then(|node| node.get_verbatim_data(DataArgument::Meta))
+        .inspect(|_| {
+            nodes.remove(0);
+        });
+
+    Document {
+        meta,
+        body: parse_inlines(nodes),
+    }
 }
