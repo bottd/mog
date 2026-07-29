@@ -1,4 +1,7 @@
-use crate::node::data::{Data, entry_into_data};
+use crate::{
+    Value,
+    node::data::{Data, entry_into_data},
+};
 use kdl::KdlEntry;
 
 // src: substring beginning after a marker or delimiter
@@ -10,13 +13,30 @@ pub fn parse_attributes(src: &str) -> (Option<Vec<Data>>, &str) {
     let mut rest = src;
 
     while let Some(end) = attribute_end(rest)
-        && let Ok(entry) = KdlEntry::parse(&rest[..end])
+        && let Some(data) = parse_attribute(&rest[..end])
     {
-        attributes.push(entry_into_data(&entry));
+        attributes.push(data);
         rest = &rest[end + 1..];
     }
 
     ((!attributes.is_empty()).then_some(attributes), rest)
+}
+
+fn parse_attribute(src: &str) -> Option<Data> {
+    match KdlEntry::parse(src) {
+        Ok(entry) => Some(entry_into_data(&entry)),
+        // KDL reserves ``#`` for keywords and raw strings
+        // currently plan to use this for as a link attribute
+        // so we need to bypass KDL error on "#" attribute
+        //
+        // [[#: Link Target Header]]
+        Err(_) if src == "#" => Some(Data {
+            name: None,
+            ty: None,
+            value: Value::String(String::from(src)),
+        }),
+        Err(_) => None,
+    }
 }
 
 fn attribute_end(src: &str) -> Option<usize> {

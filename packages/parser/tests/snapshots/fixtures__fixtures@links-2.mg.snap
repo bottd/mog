@@ -16,9 +16,11 @@ body:
           Text: "               Document reference "
       - kind:
           Delimiter: Link
+        attributes:
+          - value: "#"
         children:
           - kind:
-              Text: "#:Ingredients"
+              Text: Ingredients
       - kind:
           Text: "        Heading in current document "
       - kind:
