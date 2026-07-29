@@ -61,9 +61,15 @@ pub(super) fn parse_raw(text: &str, ancestors: &[Delimiter]) -> Vec<Node> {
                 parser.flush();
                 match delimiter {
                     Delimiter::Verbatim => {
-                        let (content, next) = verbatim_end(text, position);
+                        let (content, next) = raw_until(text, position, delimiter);
                         let content = whitespace::trim(&content);
                         node.children = (!content.is_empty()).then(|| vec![Node::raw(content)]);
+                        parser.push_node(node);
+                        position = next;
+                    }
+                    Delimiter::Link => {
+                        let (target, next) = raw_until(text, position, delimiter);
+                        node.kind = NodeKind::Link(whitespace::trim(&target).to_owned());
                         parser.push_node(node);
                         position = next;
                     }
@@ -81,20 +87,19 @@ pub(super) fn parse_raw(text: &str, ancestors: &[Delimiter]) -> Vec<Node> {
     parser.collect()
 }
 
-pub(super) fn verbatim_end(text: &str, start: usize) -> (String, usize) {
+pub(super) fn raw_until(text: &str, start: usize, delimiter: Delimiter) -> (String, usize) {
     let bytes = text.as_bytes();
+    let closing = delimiter.closing().expect("Verbatim and Link close");
     let mut content = String::new();
     let mut position = start;
 
     while position < bytes.len() {
-        if bytes[position] == b'\\'
-            && Delimiter::at(bytes, position + 1) == Some(Delimiter::Verbatim)
-        {
+        if bytes[position] == b'\\' && bytes[position + 1..].starts_with(&closing) {
             content.push_str(&text[position + 1..position + 3]);
             position += 3;
             continue;
         }
-        if Delimiter::at(bytes, position) == Some(Delimiter::Verbatim) {
+        if bytes[position..].starts_with(&closing) {
             return (content, position + 2);
         }
         let ch = text[position..].chars().next().expect("char");
@@ -103,6 +108,6 @@ pub(super) fn verbatim_end(text: &str, start: usize) -> (String, usize) {
     }
 
     // TODO: position >= bytes.len()
-    // error, unclosed verbatim
+    // error, unclosed delimiter
     (content, bytes.len())
 }
