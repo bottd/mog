@@ -30,12 +30,11 @@ fn parse_attribute(src: &str) -> Option<Data> {
         // so we need to bypass KDL error on "#" attribute
         //
         // [[#: Link Target Header]]
-        Err(_) if src == "#" => Some(Data {
+        Err(_) => (src == "#").then(|| Data {
             name: None,
             ty: None,
             value: Value::String(String::from(src)),
         }),
-        Err(_) => None,
     }
 }
 
@@ -47,7 +46,8 @@ fn attribute_end(src: &str) -> Option<usize> {
         let byte = *bytes.get(index)?;
 
         if byte == b':' {
-            return Some(index);
+            // preserve ``://`` in urls, ex: https://www.google.com
+            return (!bytes[index..].starts_with(b"://")).then_some(index);
         }
 
         if matches!(byte, b' ' | b'\t' | b'\n' | b'\r') {

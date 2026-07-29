@@ -11,24 +11,15 @@ body:
         kind: UnorderedList
     children:
       - kind:
-          Delimiter: Link
-        attributes:
-          - value: https
-        children:
-          - kind:
-              Text: //kdl.dev
+          Link: "https://kdl.dev"
   - kind:
       Marker:
         depth: 1
         kind: UnorderedList
     children:
       - kind:
-          Delimiter: Link
-        attributes:
-          - value: https
+          Link: "https://kdl.dev"
         children:
-          - kind:
-              Text: //kdl.dev
           - kind:
               Delimiter: LinkName
             children:
@@ -40,19 +31,15 @@ body:
         kind: UnorderedList
     children:
       - kind:
-          Delimiter: Link
-        attributes:
-          - value: https
+          Link: "https://kdl.dev"
         children:
-          - kind:
-              Text: //kdl.dev
           - kind:
               Delimiter: LinkName
             children:
               - kind:
                   Text: KDL
-          - kind:
-              Delimiter: Footnote
-            children:
               - kind:
-                  Text: A node-based document language
+                  Delimiter: Footnote
+                children:
+                  - kind:
+                      Text: A node-based document language

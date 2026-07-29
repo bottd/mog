@@ -1,6 +1,9 @@
-use crate::{Delimiter, Node, NodeKind, node::attribute::parse_delimiter_attributes, whitespace};
+use crate::{
+    Delimiter, Node, NodeKind, inline::resolve_nodes, node::attribute::parse_delimiter_attributes,
+    whitespace,
+};
 
-use super::raw::{parse_raw, verbatim_end};
+use super::raw::raw_until;
 
 // TODO: track column width to pad rows so table has same cols in all row
 // or maybe just do the padding at the end
@@ -51,7 +54,7 @@ fn resolve_row(row: Node, ancestors: &[Delimiter]) -> Vec<Node> {
         }
 
         if Delimiter::at(bytes, position) == Some(Delimiter::Verbatim) {
-            let (_, next) = verbatim_end(&text, position + 2);
+            let (_, next) = raw_until(&text, position + 2, Delimiter::Verbatim);
             position = next;
             continue;
         }
@@ -99,6 +102,6 @@ fn push_cell(row: &mut Node, content: &str, ancestors: &[Delimiter]) {
     row.push_child(Node {
         kind: NodeKind::Delimiter(Delimiter::TableCell),
         attributes: None,
-        children: (!content.is_empty()).then(|| parse_raw(content, ancestors)),
+        children: (!content.is_empty()).then(|| resolve_nodes(vec![Node::raw(content)], ancestors)),
     });
 }

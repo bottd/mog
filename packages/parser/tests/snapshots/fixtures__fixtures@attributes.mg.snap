@@ -30,12 +30,13 @@ body:
     children:
       - kind:
           Text: "list item with "
-      - kind:
-          Delimiter: Strong
-        attributes:
-          - value: red
         children:
           - kind:
-              Text: BOLD
-      - kind:
-          Text: " content"
+              Delimiter: Strong
+            attributes:
+              - value: red
+            children:
+              - kind:
+                  Text: BOLD
+          - kind:
+              Text: " content"

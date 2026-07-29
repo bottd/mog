@@ -1,4 +1,4 @@
-use crate::whitespace;
+use crate::{Delimiter, whitespace};
 use crate::{Node, NodeKind};
 
 #[derive(Default)]
@@ -18,9 +18,28 @@ impl Parser {
     }
 
     pub fn push_node(&mut self, node: Node) {
-        match self.stack.last_mut() {
-            Some(open) => open.push_child(node),
-            None => self.resolved.push(node),
+        let siblings = match self.stack.last_mut().or_else(|| self.resolved.last_mut()) {
+            Some(open) => open.children.get_or_insert_default(),
+            None => &mut self.resolved,
+        };
+
+        let attaches = matches!(
+            (siblings.last().map(|last| &last.kind), &node.kind),
+            (
+                Some(NodeKind::Link(_)),
+                NodeKind::Delimiter(Delimiter::LinkName | Delimiter::Footnote)
+            ) | (
+                Some(NodeKind::Delimiter(Delimiter::LinkName)),
+                NodeKind::Delimiter(Delimiter::Footnote)
+            )
+        );
+
+        // TODO: footnotes to document level
+        // LinkName and Footnote can attach to a preceding sibling
+        if attaches {
+            siblings.last_mut().expect("checked above").push_child(node);
+        } else {
+            siblings.push(node);
         }
     }
 

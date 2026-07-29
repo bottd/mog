@@ -11,7 +11,7 @@ pub fn parse_inlines(nodes: Vec<Node>) -> Vec<Node> {
     resolve_nodes(nodes, &[])
 }
 
-fn resolve_nodes(nodes: Vec<Node>, ancestors: &[Delimiter]) -> Vec<Node> {
+pub fn resolve_nodes(nodes: Vec<Node>, ancestors: &[Delimiter]) -> Vec<Node> {
     let mut resolved = Vec::with_capacity(nodes.len());
     nodes
         .into_iter()

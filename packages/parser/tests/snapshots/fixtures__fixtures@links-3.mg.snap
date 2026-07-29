@@ -8,20 +8,15 @@ body:
   - kind: Paragraph
     children:
       - kind:
-          Delimiter: Link
+          Link: recipe
         attributes:
           - value: "!"
         children:
           - kind:
-              Text: recipe
-      - kind:
-          Text: "       Document Transclusion "
-      - kind:
-          Delimiter: Link
-        attributes:
-          - value: "!"
-        children:
+              Text: "       Document Transclusion "
           - kind:
-              Text: image.png
-      - kind:
-          Text: "    Image Transclusion"
+              Link: image.png
+            attributes:
+              - value: "!"
+          - kind:
+              Text: "    Image Transclusion"

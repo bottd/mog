@@ -8,27 +8,17 @@ body:
   - kind: Paragraph
     children:
       - kind:
-          Delimiter: Link
+          Link: recipe
         children:
           - kind:
-              Text: recipe
-      - kind:
-          Text: "               Document reference "
-      - kind:
-          Delimiter: Link
-        attributes:
-          - value: "#"
-        children:
+              Text: "               Document reference "
           - kind:
-              Text: Ingredients
-      - kind:
-          Text: "        Heading in current document "
-      - kind:
-          Delimiter: Link
-        attributes:
-          - value: https
-        children:
+              Link: Ingredients
+            attributes:
+              - value: "#"
           - kind:
-              Text: //kdl.dev
-      - kind:
-          Text: "      External via protocol attribute"
+              Text: "        Heading in current document "
+          - kind:
+              Link: "https://kdl.dev"
+          - kind:
+              Text: "      External via protocol attribute"

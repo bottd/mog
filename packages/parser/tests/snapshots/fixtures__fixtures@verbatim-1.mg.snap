@@ -9,13 +9,14 @@ body:
     children:
       - kind:
           Text: "Some code with "
-      - kind:
-          Delimiter: Verbatim
-        attributes:
-          - value: python
         children:
           - kind:
-              Raw: "print(\"Hello, world!\")"
+              Delimiter: Verbatim
+            attributes:
+              - value: python
+            children:
+              - kind:
+                  Raw: "print(\"Hello, world!\")"
   - kind:
       Delimiter: Verbatim
     attributes:
