@@ -29,11 +29,11 @@ body:
         children:
           - kind:
               Text: //kdl.dev
-      - kind:
-          Delimiter: LinkName
-        children:
           - kind:
-              Text: KDL
+              Delimiter: LinkName
+            children:
+              - kind:
+                  Text: KDL
   - kind:
       Marker:
         depth: 1
@@ -46,13 +46,13 @@ body:
         children:
           - kind:
               Text: //kdl.dev
-      - kind:
-          Delimiter: LinkName
-        children:
           - kind:
-              Text: KDL
-      - kind:
-          Delimiter: Footnote
-        children:
+              Delimiter: LinkName
+            children:
+              - kind:
+                  Text: KDL
           - kind:
-              Text: A node-based document language
+              Delimiter: Footnote
+            children:
+              - kind:
+                  Text: A node-based document language
