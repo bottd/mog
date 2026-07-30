@@ -2,17 +2,20 @@
 source: packages/parser/tests/spec.rs
 expression: parse(&src)
 ---
-meta: ~
+meta:
+  - name: title
+    value:
+      entries:
+        - value: Mog Syntax Specification
+  - name: authors
+    value:
+      entries:
+        - value: Drake Bott
+  - name: version
+    value:
+      entries:
+        - value: 0.1
 body:
-  - kind:
-      Marker:
-        depth: 2
-        kind: UnorderedList
-    children:
-      - kind: Paragraph
-        children:
-          - kind:
-              Text: "title \"Mog Syntax Specification\" authors \"Drake Bott\" version 0.1"
   - kind:
       Marker:
         depth: 1
@@ -123,13 +126,14 @@ body:
     children:
       - kind:
           Text: "Documents are UTF-8 encoded files with a "
-      - kind:
-          Delimiter: Verbatim
         children:
           - kind:
-              Raw: ".mg"
-      - kind:
-          Text: " file extension. A leading byte-order mark (U+FEFF) is stripped by the parser and not considered document content. Line endings can be LF (U+000A) or CRLF (U+000D U+000A), parsing normalizes to LF."
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: ".mg"
+          - kind:
+              Text: " file extension. A leading byte-order mark (U+FEFF) is stripped by the parser and not considered document content. Line endings can be LF (U+000A) or CRLF (U+000D U+000A), parsing normalizes to LF."
   - kind:
       Marker:
         depth: 3
@@ -190,27 +194,24 @@ body:
     children:
       - kind:
           Text: "Metadata may appear at the beginning of a document, delimited by two hyphens. Data is formatted in "
-      - kind:
-          Delimiter: Link
-        attributes:
-          - value: https
         children:
           - kind:
-              Text: //kdl.dev
-      - kind:
-          Delimiter: LinkName
-        children:
+              Link: "https://kdl.dev"
+            children:
+              - kind:
+                  Delimiter: LinkName
+                children:
+                  - kind:
+                      Text: KDL
           - kind:
-              Text: KDL
-      - kind:
-          Text: " syntax:"
+              Text: " syntax:"
   - kind:
       Delimiter: Verbatim
     attributes:
       - value: mog
     children:
       - kind:
-          Raw: "--"
+          Raw: "``meta:"
       - kind:
           Raw: "title \"My Document\""
       - kind:
@@ -220,7 +221,7 @@ body:
       - kind:
           Raw: version 1
       - kind:
-          Raw: "--"
+          Raw: "``"
   - kind:
       Marker:
         depth: 3
@@ -250,20 +251,21 @@ body:
     children:
       - kind:
           Text: "Structural markers are used to give documents structure. These markers open the line they are used on, ignoring leading whitespace. Structural markers are repeated to explicitly indicate nesting. Using a heading "
-      - kind:
-          Delimiter: Verbatim
         children:
           - kind:
-              Raw: "#"
-      - kind:
-          Text: " marker once is a top-level heading, two markers "
-      - kind:
-          Delimiter: Verbatim
-        children:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "#"
           - kind:
-              Raw: "##"
-      - kind:
-          Text: " represent a subheading and so on. These rules apply to all structural markers."
+              Text: " marker once is a top-level heading, two markers "
+          - kind:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "##"
+          - kind:
+              Text: " represent a subheading and so on. These rules apply to all structural markers."
   - kind: Table
     children:
       - kind:
@@ -483,20 +485,21 @@ body:
     children:
       - kind:
           Text: "A task marker can be placed after any structural marker except "
-      - kind:
-          Delimiter: Verbatim
         children:
           - kind:
-              Raw: "="
-      - kind:
-          Text: " thematic breaks. Tasks are marked using square brackets: "
-      - kind:
-          Delimiter: Verbatim
-        children:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "="
           - kind:
-              Raw: "[ ]"
-      - kind:
-          Text: ". The status of a task is determined by the character between brackets."
+              Text: " thematic breaks. Tasks are marked using square brackets: "
+          - kind:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "[ ]"
+          - kind:
+              Text: ". The status of a task is determined by the character between brackets."
   - kind: Table
     children:
       - kind:
@@ -522,7 +525,7 @@ body:
                   Delimiter: Verbatim
                 children:
                   - kind:
-                      Raw: "[ ]"
+                      Raw: o
           - kind:
               Delimiter: TableCell
             children:
@@ -538,7 +541,7 @@ body:
                   Delimiter: Verbatim
                 children:
                   - kind:
-                      Raw: "[x]"
+                      Raw: "."
           - kind:
               Delimiter: TableCell
             children:
@@ -554,7 +557,7 @@ body:
                   Delimiter: Verbatim
                 children:
                   - kind:
-                      Raw: "[~]"
+                      Raw: ">"
           - kind:
               Delimiter: TableCell
             children:
@@ -570,7 +573,7 @@ body:
                   Delimiter: Verbatim
                 children:
                   - kind:
-                      Raw: "[?]"
+                      Raw: "?"
           - kind:
               Delimiter: TableCell
             children:
@@ -586,23 +589,7 @@ body:
                   Delimiter: Verbatim
                 children:
                   - kind:
-                      Raw: "[!]"
-          - kind:
-              Delimiter: TableCell
-            children:
-              - kind:
-                  Text: Urgent
-      - kind:
-          Delimiter: TableRow
-        children:
-          - kind:
-              Delimiter: TableCell
-            children:
-              - kind:
-                  Delimiter: Verbatim
-                children:
-                  - kind:
-                      Raw: "[-]"
+                      Raw: x
           - kind:
               Delimiter: TableCell
             children:
@@ -614,19 +601,24 @@ body:
       - value: mog
     children:
       - kind:
-          Raw: "- [~] Grocery shopping"
+          Raw: "->: Grocery shopping"
       - kind:
-          Raw: "-- [x] Eggs"
+          Raw: "--.: Eggs"
       - kind:
-          Raw: "-- [~] Milk"
+          Raw: "-->: Milk"
       - kind:
-          Raw: "-- [?] Oat or almond?"
+          Raw: "--?: Oat or almond?"
       - kind:
-          Raw: "- [ ] Clean kitchen"
+          Raw: "-o: Clean kitchen"
       - kind:
-          Raw: "- [!] Call dentist"
+          Raw: "-x: Return sweater"
+  - kind:
+      Delimiter: Verbatim
+    attributes:
+      - value: mog
+    children:
       - kind:
-          Raw: "- [-] Return sweater"
+          Raw: "-o:due=(date)2026-07-29: Renew passport"
   - kind:
       Marker:
         depth: 2
@@ -652,8 +644,8 @@ body:
         children:
           - kind:
               Raw: ":"
-      - kind:
-          Text: " (0x3A)"
+          - kind:
+              Text: " (0x3A)"
   - kind:
       Marker:
         depth: 1
@@ -664,8 +656,8 @@ body:
         children:
           - kind:
               Raw: (
-      - kind:
-          Text: " (0x28)"
+          - kind:
+              Text: " (0x28)"
   - kind:
       Marker:
         depth: 1
@@ -676,8 +668,8 @@ body:
         children:
           - kind:
               Raw: )
-      - kind:
-          Text: " (0x29)"
+          - kind:
+              Text: " (0x29)"
   - kind:
       Marker:
         depth: 1
@@ -688,8 +680,8 @@ body:
         children:
           - kind:
               Raw: "["
-      - kind:
-          Text: " (0x5B)"
+          - kind:
+              Text: " (0x5B)"
   - kind:
       Marker:
         depth: 1
@@ -700,8 +692,8 @@ body:
         children:
           - kind:
               Raw: "]"
-      - kind:
-          Text: " (0x5D)"
+          - kind:
+              Text: " (0x5D)"
   - kind:
       Marker:
         depth: 1
@@ -712,8 +704,8 @@ body:
         children:
           - kind:
               Raw: "{"
-      - kind:
-          Text: " (0x7B)"
+          - kind:
+              Text: " (0x7B)"
   - kind:
       Marker:
         depth: 1
@@ -724,8 +716,8 @@ body:
         children:
           - kind:
               Raw: "}"
-      - kind:
-          Text: " (0x7D)"
+          - kind:
+              Text: " (0x7D)"
   - kind:
       Marker:
         depth: 1
@@ -736,8 +728,8 @@ body:
         children:
           - kind:
               Raw: "|"
-      - kind:
-          Text: " (0x7C)"
+          - kind:
+              Text: " (0x7C)"
   - kind:
       Marker:
         depth: 1
@@ -748,8 +740,8 @@ body:
         children:
           - kind:
               Raw: ;
-      - kind:
-          Text: " (0x3B)"
+          - kind:
+              Text: " (0x3B)"
   - kind:
       Marker:
         depth: 1
@@ -760,8 +752,8 @@ body:
         children:
           - kind:
               Raw: "\""
-      - kind:
-          Text: " (0x22)"
+          - kind:
+              Text: " (0x22)"
   - kind:
       Marker:
         depth: 1
@@ -772,8 +764,8 @@ body:
         children:
           - kind:
               Raw: "'"
-      - kind:
-          Text: " (0x27)"
+          - kind:
+              Text: " (0x27)"
   - kind:
       Marker:
         depth: 1
@@ -784,8 +776,8 @@ body:
         children:
           - kind:
               Raw: ","
-      - kind:
-          Text: " (0x2C)"
+          - kind:
+              Text: " (0x2C)"
   - kind:
       Marker:
         depth: 1
@@ -796,8 +788,20 @@ body:
         children:
           - kind:
               Raw: "~"
+          - kind:
+              Text: " (0x7E)"
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
       - kind:
-          Text: " (0x7E)"
+          Delimiter: Verbatim
+        children:
+          - kind:
+              Raw: "="
+          - kind:
+              Text: " (0x3D)"
   - kind: Paragraph
     children:
       - kind:
@@ -833,40 +837,8 @@ body:
     children:
       - kind:
           Raw: "##red:underline: My Heading"
-  - kind:
-      Marker:
-        depth: 3
-        kind: Heading
-    children:
       - kind:
-          Text: 3.2 Data Attributes
-  - kind: Paragraph
-    children:
-      - kind:
-          Text: "Where an attribute flag is not enough, attributes can be structured using "
-      - kind:
-          Delimiter: Link
-        attributes:
-          - value: https
-        children:
-          - kind:
-              Text: //janet-lang.org
-      - kind:
-          Delimiter: LinkName
-        children:
-          - kind:
-              Text: Janet
-      - kind:
-          Text: " table or list syntax."
-  - kind:
-      Delimiter: Verbatim
-    attributes:
-      - value: mog
-    children:
-      - kind:
-          Raw: "-{:key \"value\"}: Table attribute"
-      - kind:
-          Raw: "-[\"item 1\" \"item 2\"]: List attribute"
+          Raw: "-o:due=(date)2026-07-29:owner=\"Jane\": Renew passport"
   - kind:
       Marker:
         depth: 2
@@ -948,13 +920,14 @@ body:
             children:
               - kind:
                   Delimiter: Verbatim
-              - kind:
-                  Text: " "
-              - kind:
-                  Delimiter: Verbatim
                 children:
                   - kind:
-                      Raw: "|| verbatim        || Literal text        ||"
+                      Text: " "
+                  - kind:
+                      Delimiter: Verbatim
+                    children:
+                      - kind:
+                          Raw: "|| verbatim        || Literal text        ||"
           - kind:
               Delimiter: TableCell
           - kind:
@@ -1204,27 +1177,28 @@ body:
     children:
       - kind:
           Text: "Tables are constructed using "
-      - kind:
-          Delimiter: Verbatim
         children:
           - kind:
-              Raw: "#|"
-      - kind:
-          Text: " table header and "
-      - kind:
-          Delimiter: Verbatim
-        children:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "#|"
           - kind:
-              Raw: "-|"
-      - kind:
-          Text: " table row delimiters. Within a row, cells are delimited using "
-      - kind:
-          Delimiter: Verbatim
-        children:
+              Text: " table header and "
           - kind:
-              Raw: "||"
-      - kind:
-          Text: ". Table cells can include semantic delimiters for presentation of tabulated data. A table is terminated by an empty line."
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "-|"
+          - kind:
+              Text: " table row delimiters. Within a row, cells are delimited using "
+          - kind:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "||"
+          - kind:
+              Text: ". Table cells can include semantic delimiters for presentation of tabulated data. A table is terminated by an empty line."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1313,27 +1287,28 @@ body:
     children:
       - kind:
           Text: "Links "
-      - kind:
-          Delimiter: Verbatim
         children:
           - kind:
-              Raw: "[[  ]]"
-      - kind:
-          Text: " are formatted with square brackets. A link can be bare, or it may have a name "
-      - kind:
-          Delimiter: Verbatim
-        children:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "[[  ]]"
           - kind:
-              Raw: ((  ))
-      - kind:
-          Text: " and footnote "
-      - kind:
-          Delimiter: Verbatim
-        children:
+              Text: " are formatted with square brackets. A link can be bare, or it may have a name "
           - kind:
-              Raw: "{{  }}"
-      - kind:
-          Text: "."
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: ((  ))
+          - kind:
+              Text: " and footnote "
+          - kind:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "{{  }}"
+          - kind:
+              Text: "."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1349,20 +1324,21 @@ body:
     children:
       - kind:
           Text: "Link resolution is driven by attributes. A bare link is a document reference and is resolved against filenames and metadata "
-      - kind:
-          Delimiter: Verbatim
         children:
           - kind:
-              Raw: title
-      - kind:
-          Text: " fields. Headings can be referenced using the "
-      - kind:
-          Delimiter: Verbatim
-        children:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: title
           - kind:
-              Raw: "#"
-      - kind:
-          Text: " attribute. External targets are identified by their protocol attribute."
+              Text: " fields. Headings can be referenced using the "
+          - kind:
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "#"
+          - kind:
+              Text: " attribute. External targets are identified by their protocol attribute."
   - kind:
       Delimiter: Verbatim
     attributes:
@@ -1378,13 +1354,14 @@ body:
     children:
       - kind:
           Text: "Link transclusion is indicated using the transclude "
-      - kind:
-          Delimiter: Verbatim
         children:
           - kind:
-              Raw: "!"
-      - kind:
-          Text: " attribute. Transclusion works for both documents and media."
+              Delimiter: Verbatim
+            children:
+              - kind:
+                  Raw: "!"
+          - kind:
+              Text: " attribute. Transclusion works for both documents and media."
   - kind:
       Delimiter: Verbatim
     attributes:

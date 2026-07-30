@@ -1,8 +1,8 @@
---
+``meta:
 title "Mog Syntax Specification"
 authors "Drake Bott"
 version 0.1
---
+``
 
 # Mog Syntax Specification v0.1
 
@@ -60,12 +60,12 @@ Metadata may appear at the beginning of a document, delimited by two
 hyphens. Data is formatted in [[https://kdl.dev]]((KDL)) syntax:
 
 ``mog:
---
+\``meta:
 title "My Document"
 authors "John" "Jane"
 date "2026-04-15"
 version 1
---
+\``
 ``
 
 ### 1.5 Escape Sequences
@@ -146,21 +146,23 @@ thematic breaks. Tasks are marked using square brackets: ``[ ]``. The
 status of a task is determined by the character between brackets.
 
 #| Marker    || Status      ||
--| ``[ ]``   || Undone      ||
--| ``[x]``   || Done        ||
--| ``[~]``   || In progress ||
--| ``[?]``   || Uncertain   ||
--| ``[!]``   || Urgent      ||
--| ``[-]``   || Cancelled   ||
+-| ``o``     || Undone      ||
+-| ``.``     || Done        ||
+-| ``>``     || In progress ||
+-| ``?``     || Uncertain   ||
+-| ``x``     || Cancelled   ||
 
 ``mog:
-- [~] Grocery shopping
--- [x] Eggs
--- [~] Milk
--- [?] Oat or almond?
-- [ ] Clean kitchen
-- [!] Call dentist
-- [-] Return sweater
+->: Grocery shopping
+--.: Eggs
+-->: Milk
+--?: Oat or almond?
+-o: Clean kitchen
+-x: Return sweater
+``
+
+``mog:
+-o:due=(date)2026-07-29: Renew passport
 ``
 
 ## 3 Attributes
@@ -185,6 +187,7 @@ following reserved characters:
 - ``'`` (0x27)
 - ``,`` (0x2C)
 - ``~`` (0x7E)
+- ``=`` (0x3D)
 
 All other printable characters, including digits and Unicode letters,
 are permitted.
@@ -205,16 +208,7 @@ the beginning of text content.
 
 ``mog:
 ##red:underline: My Heading
-``
-
-### 3.2 Data Attributes
-
-Where an attribute flag is not enough, attributes can be structured
-using [[https://janet-lang.org]]((Janet)) table or list syntax.
-
-``mog:
--{:key "value"}: Table attribute
--["item 1" "item 2"]: List attribute
+-o:due=(date)2026-07-29:owner="Jane": Renew passport
 ``
 
 ## 4 Semantic Delimiters
