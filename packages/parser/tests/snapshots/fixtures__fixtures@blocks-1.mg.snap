@@ -1,0 +1,32 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/blocks-1.mg
+---
+meta: ~
+body:
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: Reading notes
+  - kind:
+      Marker:
+        depth: 2
+        kind: UnorderedList
+    children:
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: "Chapter 3 was particularly relevant:"
+      - kind:
+          Marker:
+            depth: 1
+            kind: Blockquote
+        children:
+          - kind: Paragraph
+            children:
+              - kind:
+                  Text: quote from chapter 3

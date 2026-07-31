@@ -1,0 +1,84 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/tables-1.mg
+---
+meta: ~
+body:
+  - kind: Table
+    children:
+      - kind:
+          Delimiter: TableHeader
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Name
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Type
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Color
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Apple
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Fruit
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Red
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Delimiter: Strong
+                children:
+                  - kind:
+                      Text: Carrot
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Vegetable
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Orange
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Blueberry
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Fruit
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Blue

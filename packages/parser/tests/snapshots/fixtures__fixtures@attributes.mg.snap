@@ -1,0 +1,42 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/attributes.mg
+---
+meta: ~
+body:
+  - kind:
+      Marker:
+        depth: 2
+        kind: Heading
+    attributes:
+      - value: red
+    children:
+      - kind:
+          Text: My Heading
+  - kind:
+      Marker:
+        depth: 2
+        kind: Heading
+    attributes:
+      - value: red
+    children:
+      - kind:
+          Text: My Heading
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: "list item with "
+        children:
+          - kind:
+              Delimiter: Strong
+            attributes:
+              - value: red
+            children:
+              - kind:
+                  Text: BOLD
+          - kind:
+              Text: " content"

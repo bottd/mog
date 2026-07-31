@@ -1,0 +1,3 @@
+- [[https://kdl.dev]]
+- [[https://kdl.dev]]((KDL))
+- [[https://kdl.dev]]((KDL)){{ A node-based document language }}

@@ -1,0 +1,22 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/links-3.mg
+---
+meta: ~
+body:
+  - kind: Paragraph
+    children:
+      - kind:
+          Link: recipe
+        attributes:
+          - value: "!"
+        children:
+          - kind:
+              Text: "       Document Transclusion "
+          - kind:
+              Link: image.png
+            attributes:
+              - value: "!"
+          - kind:
+              Text: "    Image Transclusion"

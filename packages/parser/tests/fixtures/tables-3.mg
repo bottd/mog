@@ -1,0 +1,4 @@
+#| Name       || Type      || Color    ||
+-| Apple      || Fruit     ||
+-| Carrot     || Vegetable || Orange   || Crunchy ||
+-| Blueberry  || Fruit     || Blue     ||

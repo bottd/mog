@@ -1,0 +1,117 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/tables-5.mg
+---
+meta: ~
+body:
+  - kind: Table
+    children:
+      - kind:
+          Delimiter: TableHeader
+        children:
+          - kind:
+              Delimiter: TableCell
+          - kind:
+              Delimiter: TableCell
+          - kind:
+              Delimiter: TableCell
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Texture
+      - kind:
+          Delimiter: TableHeader
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Name
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Type
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Color
+          - kind:
+              Delimiter: TableCell
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Apple
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Fruit
+          - kind:
+              Delimiter: TableCell
+          - kind:
+              Delimiter: TableCell
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Blueberry
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Fruit
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Blue
+          - kind:
+              Delimiter: TableCell
+      - kind:
+          Delimiter: TableHeader
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Vegetables
+          - kind:
+              Delimiter: TableCell
+          - kind:
+              Delimiter: TableCell
+          - kind:
+              Delimiter: TableCell
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Carrot
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Vegetable
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Orange
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: Crunchy

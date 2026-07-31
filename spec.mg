@@ -1,8 +1,8 @@
---
+``meta:
 title "Mog Syntax Specification"
 authors "Drake Bott"
 version 0.1
---
+``
 
 # Mog Syntax Specification v0.1
 
@@ -60,12 +60,12 @@ Metadata may appear at the beginning of a document, delimited by two
 hyphens. Data is formatted in [[https://kdl.dev]]((KDL)) syntax:
 
 ``mog:
---
+\``meta:
 title "My Document"
 authors "John" "Jane"
 date "2026-04-15"
 version 1
---
+\``
 ``
 
 ### 1.5 Escape Sequences
@@ -146,21 +146,23 @@ thematic breaks. Tasks are marked using square brackets: ``[ ]``. The
 status of a task is determined by the character between brackets.
 
 #| Marker    || Status      ||
--| ``[ ]``   || Undone      ||
--| ``[x]``   || Done        ||
--| ``[~]``   || In progress ||
--| ``[?]``   || Uncertain   ||
--| ``[!]``   || Urgent      ||
--| ``[-]``   || Cancelled   ||
+-| ``o``     || Undone      ||
+-| ``.``     || Done        ||
+-| ``>``     || In progress ||
+-| ``?``     || Uncertain   ||
+-| ``x``     || Cancelled   ||
 
 ``mog:
-- [~] Grocery shopping
--- [x] Eggs
--- [~] Milk
--- [?] Oat or almond?
-- [ ] Clean kitchen
-- [!] Call dentist
-- [-] Return sweater
+->: Grocery shopping
+--.: Eggs
+-->: Milk
+--?: Oat or almond?
+-o: Clean kitchen
+-x: Return sweater
+``
+
+``mog:
+-o:due=(date)2026-07-29: Renew passport
 ``
 
 ## 3 Attributes
@@ -185,6 +187,7 @@ following reserved characters:
 - ``'`` (0x27)
 - ``,`` (0x2C)
 - ``~`` (0x7E)
+- ``=`` (0x3D)
 
 All other printable characters, including digits and Unicode letters,
 are permitted.
@@ -205,16 +208,7 @@ the beginning of text content.
 
 ``mog:
 ##red:underline: My Heading
-``
-
-### 3.2 Data Attributes
-
-Where an attribute flag is not enough, attributes can be structured
-using [[https://janet-lang.org]]((Janet)) table or list syntax.
-
-``mog:
--{:key "value"}: Table attribute
--["item 1" "item 2"]: List attribute
+-o:due=(date)2026-07-29:owner="Jane": Renew passport
 ``
 
 ## 4 Semantic Delimiters
@@ -229,7 +223,6 @@ whitespace is trimmed within semantic delimiters.
 -| ``__``         || italic          || Italic              ||
 -| `` `` ``       || verbatim        || Literal text        ||
 -| ``~~``         || strikethrough   || Struck-through text ||
--| ``$$``         || math            || Math expression     ||
 -| ``#|``         || table-header    || Table header        ||
 -| ``-|``         || table-row       || Table row           ||
 -| ``||``         || table-cell      || Table cell          ||
@@ -249,21 +242,7 @@ soft wrapping** in
 it.
 ``
 
-### 4.1 Math
-
-Text contained within math delimiters is treated as verbatim, but
-evaluated as [[https://typst.app/docs/reference/math/]]((Typst)) math
-when rendered.
-
-``mog:
-Einstein's famous equation $$E = m c^2$$ changed physics.
-
-$$
-E^2 = (m c^2)^2 + (p c)^2
-$$
-``
-
-### 4.2 Verbatim
+### 4.1 Verbatim
 
 Text between verbatim delimiters is preserved literally. To indicate a
 syntax for highlighting when rendered, a lang attribute is attached to
@@ -298,7 +277,7 @@ def greet(name):
   print(f"Hello, {name}!")
 ``
 
-### 4.3 Tables
+### 4.2 Tables
 
 Tables are constructed using ``#|`` table header and ``-|`` table row
 delimiters. Within a row, cells are delimited using ``||``. Table cells
@@ -349,7 +328,7 @@ A table may have multiple or mid-table header rows:
 -| Carrot     || Vegetable || Orange   || Crunchy ||
 ``
 
-### 4.4 Links
+### 4.3 Links
 
 Links ``[[  ]]`` are formatted with square brackets. A link can be bare,
 or it may have a name ``((  ))`` and footnote ``{{  }}``.
@@ -379,7 +358,7 @@ Transclusion works for both documents and media.
 [[!:image.png]]    Image Transclusion
 ``
 
-### 4.5 Footnotes
+### 4.4 Footnotes
 
 When footnote contents do not fit inline, they may be linked from
 elsewhere in the document:

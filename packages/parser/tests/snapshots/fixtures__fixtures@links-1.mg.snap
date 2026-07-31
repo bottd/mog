@@ -1,0 +1,45 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/links-1.mg
+---
+meta: ~
+body:
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Link: "https://kdl.dev"
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Link: "https://kdl.dev"
+        children:
+          - kind:
+              Delimiter: LinkName
+            children:
+              - kind:
+                  Text: KDL
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Link: "https://kdl.dev"
+        children:
+          - kind:
+              Delimiter: LinkName
+            children:
+              - kind:
+                  Text: KDL
+              - kind:
+                  Delimiter: Footnote
+                children:
+                  - kind:
+                      Text: A node-based document language

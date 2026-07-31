@@ -1,0 +1,15 @@
+[package]
+name = "mog-parser"
+version = "0.1.1"
+edition = "2024"
+rust-version = "1.88"
+description = "Parser for Mog markup"
+license = "MIT"
+authors = ["Drake Bott"]
+
+[dependencies]
+kdl = "6"
+serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+insta = { version = "1.47", features = ["yaml", "glob"] }

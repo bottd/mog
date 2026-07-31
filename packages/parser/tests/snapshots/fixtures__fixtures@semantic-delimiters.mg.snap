@@ -1,0 +1,36 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/semantic-delimiters.mg
+---
+meta: ~
+body:
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "The quick brown fox jumped over the "
+        children:
+          - kind:
+              Delimiter: Strong
+            children:
+              - kind:
+                  Text: lazy dog.
+  - kind:
+      Delimiter: Strong
+    children:
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: The quick brown fox jumped over the lazy dog.
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "A paragraph "
+        children:
+          - kind:
+              Delimiter: Strong
+            children:
+              - kind:
+                  Text: with soft wrapping
+          - kind:
+              Text: " in it."
