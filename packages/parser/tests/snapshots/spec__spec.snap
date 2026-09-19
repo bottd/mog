@@ -2,19 +2,25 @@
 source: packages/parser/tests/spec.rs
 expression: parse(&src)
 ---
-meta:
-  - name: title
-    value:
-      entries:
-        - value: Mog Syntax Specification
-  - name: authors
-    value:
-      entries:
-        - value: Drake Bott
-  - name: version
-    value:
-      entries:
-        - value: 0.1
+attributes:
+  children:
+    - name: title
+      value:
+        entries:
+          - value: Mog Syntax Specification
+    - name: authors
+      value:
+        entries:
+          - value: Drake Bott
+    - name: version
+      value:
+        entries:
+          - value: 0.1
+  blocks:
+    - start: 0
+      end: 76
+      start_line: 0
+      end_line: 4
 body:
   - kind:
       Marker:
@@ -23,6 +29,11 @@ body:
     children:
       - kind:
           Text: Mog Syntax Specification v0.1
+    span:
+      start: 78
+      end: 109
+      start_line: 6
+      end_line: 6
   - kind:
       Marker:
         depth: 2
@@ -30,10 +41,20 @@ body:
     children:
       - kind:
           Text: Introduction
+    span:
+      start: 111
+      end: 126
+      start_line: 8
+      end_line: 8
   - kind: Paragraph
     children:
       - kind:
           Text: "Mog is a markup syntax designed for rich, interconnected documents: knowledge bases, wikis, and publishing on the web. It draws from Markdown, Org, and Neorg, but diverges with two-character delimiters, explicit nesting, and inline attributes. Together these create a unified grammar for expression. This document specifies the structure and rules for markup in a Mog document."
+    span:
+      start: 128
+      end: 505
+      start_line: 10
+      end_line: 15
   - kind:
       Marker:
         depth: 2
@@ -41,6 +62,11 @@ body:
     children:
       - kind:
           Text: Table of Contents
+    span:
+      start: 507
+      end: 527
+      start_line: 17
+      end_line: 17
   - kind: Table
     children:
       - kind:
@@ -56,6 +82,11 @@ body:
             children:
               - kind:
                   Text: Title
+        span:
+          start: 529
+          end: 574
+          start_line: 19
+          end_line: 19
       - kind:
           Delimiter: TableRow
         children:
@@ -69,6 +100,11 @@ body:
             children:
               - kind:
                   Text: Document Structure
+        span:
+          start: 575
+          end: 620
+          start_line: 20
+          end_line: 20
       - kind:
           Delimiter: TableRow
         children:
@@ -82,6 +118,11 @@ body:
             children:
               - kind:
                   Text: Structural Markers
+        span:
+          start: 621
+          end: 666
+          start_line: 21
+          end_line: 21
       - kind:
           Delimiter: TableRow
         children:
@@ -95,6 +136,11 @@ body:
             children:
               - kind:
                   Text: Attributes
+        span:
+          start: 667
+          end: 712
+          start_line: 22
+          end_line: 22
       - kind:
           Delimiter: TableRow
         children:
@@ -108,6 +154,16 @@ body:
             children:
               - kind:
                   Text: Semantic Delimiters
+        span:
+          start: 713
+          end: 758
+          start_line: 23
+          end_line: 23
+    span:
+      start: 529
+      end: 758
+      start_line: 19
+      end_line: 23
   - kind:
       Marker:
         depth: 2
@@ -115,6 +171,11 @@ body:
     children:
       - kind:
           Text: 1 Document Structure
+    span:
+      start: 760
+      end: 783
+      start_line: 25
+      end_line: 25
   - kind:
       Marker:
         depth: 3
@@ -122,18 +183,27 @@ body:
     children:
       - kind:
           Text: 1.1 Text Encoding
+    span:
+      start: 785
+      end: 806
+      start_line: 27
+      end_line: 27
   - kind: Paragraph
     children:
       - kind:
           Text: "Documents are UTF-8 encoded files with a "
+      - kind:
+          Delimiter: Verbatim
         children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: ".mg"
-          - kind:
-              Text: " file extension. A leading byte-order mark (U+FEFF) is stripped by the parser and not considered document content. Line endings can be LF (U+000A) or CRLF (U+000D U+000A), parsing normalizes to LF."
+              Raw: ".mg"
+      - kind:
+          Text: " file extension. A leading byte-order mark (U+FEFF) is stripped by the parser and not considered document content. Line endings can be LF (U+000A) or CRLF (U+000D U+000A), parsing normalizes to LF."
+    span:
+      start: 808
+      end: 1053
+      start_line: 29
+      end_line: 32
   - kind:
       Marker:
         depth: 3
@@ -141,10 +211,20 @@ body:
     children:
       - kind:
           Text: 1.2 Whitespace
+    span:
+      start: 1055
+      end: 1073
+      start_line: 34
+      end_line: 34
   - kind: Paragraph
     children:
       - kind:
           Text: "The following Unicode characters are considered whitespace:"
+    span:
+      start: 1075
+      end: 1134
+      start_line: 36
+      end_line: 36
   - kind:
       Marker:
         depth: 1
@@ -152,6 +232,11 @@ body:
     children:
       - kind:
           Text: Tab (0x09)
+    span:
+      start: 1136
+      end: 1148
+      start_line: 38
+      end_line: 38
   - kind:
       Marker:
         depth: 1
@@ -159,19 +244,35 @@ body:
     children:
       - kind:
           Text: Space (0x20)
+    span:
+      start: 1149
+      end: 1163
+      start_line: 39
+      end_line: 39
   - kind: Paragraph
     children:
       - kind:
           Text: "Whitespace is not used to structure Mog. Leading and trailing whitespace is trimmed when parsing a document. The following headings parse identically:"
+    span:
+      start: 1165
+      end: 1315
+      start_line: 41
+      end_line: 43
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "# My heading"
       - kind:
           Raw: "  # My heading  "
+    span:
+      start: 1317
+      end: 1356
+      start_line: 45
+      end_line: 48
   - kind:
       Marker:
         depth: 3
@@ -179,10 +280,20 @@ body:
     children:
       - kind:
           Text: 1.3 Paragraphs
+    span:
+      start: 1358
+      end: 1376
+      start_line: 50
+      end_line: 50
   - kind: Paragraph
     children:
       - kind:
           Text: "A paragraph is a continuous sequence of text lines. Paragraphs are terminated by a blank line, structural marker, or the end of the document. Line breaks within a paragraph are parsed as soft wraps."
+    span:
+      start: 1378
+      end: 1576
+      start_line: 52
+      end_line: 54
   - kind:
       Marker:
         depth: 3
@@ -190,28 +301,38 @@ body:
     children:
       - kind:
           Text: 1.4 Metadata
+    span:
+      start: 1578
+      end: 1594
+      start_line: 56
+      end_line: 56
   - kind: Paragraph
     children:
       - kind:
           Text: "Metadata may appear at the beginning of a document, delimited by two hyphens. Data is formatted in "
+      - kind:
+          Link: "https://kdl.dev"
         children:
           - kind:
-              Link: "https://kdl.dev"
+              Delimiter: LinkName
             children:
               - kind:
-                  Delimiter: LinkName
-                children:
-                  - kind:
-                      Text: KDL
-          - kind:
-              Text: " syntax:"
+                  Text: KDL
+      - kind:
+          Text: " syntax:"
+    span:
+      start: 1596
+      end: 1729
+      start_line: 58
+      end_line: 59
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
-          Raw: "``meta:"
+          Raw: "``attr:"
       - kind:
           Raw: "title \"My Document\""
       - kind:
@@ -222,6 +343,11 @@ body:
           Raw: version 1
       - kind:
           Raw: "``"
+    span:
+      start: 1731
+      end: 1823
+      start_line: 61
+      end_line: 68
   - kind:
       Marker:
         depth: 3
@@ -229,17 +355,33 @@ body:
     children:
       - kind:
           Text: 1.5 Escape Sequences
+    span:
+      start: 1825
+      end: 1849
+      start_line: 70
+      end_line: 70
   - kind: Paragraph
     children:
       - kind:
           Text: "A backslash immediately preceding a delimiter or structural marker escapes it, rendering the delimiter or marker literal. A backslash in any other position is itself literal and requires no escaping."
+    span:
+      start: 1851
+      end: 2050
+      start_line: 72
+      end_line: 74
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "\\**this is not bold\\**"
+    span:
+      start: 2052
+      end: 2084
+      start_line: 76
+      end_line: 78
   - kind:
       Marker:
         depth: 2
@@ -247,25 +389,34 @@ body:
     children:
       - kind:
           Text: 2 Structural Markers
+    span:
+      start: 2086
+      end: 2109
+      start_line: 80
+      end_line: 80
   - kind: Paragraph
     children:
       - kind:
           Text: "Structural markers are used to give documents structure. These markers open the line they are used on, ignoring leading whitespace. Structural markers are repeated to explicitly indicate nesting. Using a heading "
+      - kind:
+          Delimiter: Verbatim
         children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "#"
+              Raw: "#"
+      - kind:
+          Text: " marker once is a top-level heading, two markers "
+      - kind:
+          Delimiter: Verbatim
+        children:
           - kind:
-              Text: " marker once is a top-level heading, two markers "
-          - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "##"
-          - kind:
-              Text: " represent a subheading and so on. These rules apply to all structural markers."
+              Raw: "##"
+      - kind:
+          Text: " represent a subheading and so on. These rules apply to all structural markers."
+    span:
+      start: 2111
+      end: 2462
+      start_line: 82
+      end_line: 86
   - kind: Table
     children:
       - kind:
@@ -286,6 +437,11 @@ body:
             children:
               - kind:
                   Text: Semantic Meaning
+        span:
+          start: 2464
+          end: 2529
+          start_line: 88
+          end_line: 88
       - kind:
           Delimiter: TableRow
         children:
@@ -307,6 +463,11 @@ body:
             children:
               - kind:
                   Text: Section heading
+        span:
+          start: 2530
+          end: 2595
+          start_line: 89
+          end_line: 89
       - kind:
           Delimiter: TableRow
         children:
@@ -328,6 +489,11 @@ body:
             children:
               - kind:
                   Text: Unordered list item
+        span:
+          start: 2596
+          end: 2661
+          start_line: 90
+          end_line: 90
       - kind:
           Delimiter: TableRow
         children:
@@ -349,6 +515,11 @@ body:
             children:
               - kind:
                   Text: Ordered list item
+        span:
+          start: 2662
+          end: 2727
+          start_line: 91
+          end_line: 91
       - kind:
           Delimiter: TableRow
         children:
@@ -370,6 +541,11 @@ body:
             children:
               - kind:
                   Text: Blockquote
+        span:
+          start: 2728
+          end: 2793
+          start_line: 92
+          end_line: 92
       - kind:
           Delimiter: TableRow
         children:
@@ -391,10 +567,25 @@ body:
             children:
               - kind:
                   Text: Thematic break
+        span:
+          start: 2794
+          end: 2859
+          start_line: 93
+          end_line: 93
+    span:
+      start: 2464
+      end: 2859
+      start_line: 88
+      end_line: 93
   - kind: Paragraph
     children:
       - kind:
           Text: An optional whitespace character can be placed between a marker and content. This whitespace is trimmed when present.
+    span:
+      start: 2861
+      end: 2978
+      start_line: 95
+      end_line: 96
   - kind:
       Marker:
         depth: 3
@@ -402,14 +593,25 @@ body:
     children:
       - kind:
           Text: 2.1 Nesting
+    span:
+      start: 2980
+      end: 2995
+      start_line: 98
+      end_line: 98
   - kind: Paragraph
     children:
       - kind:
           Text: "All structural markers can nest. Nesting is expressed through marker repetition. A repeated marker indicates a sub-entity:"
+    span:
+      start: 2997
+      end: 3119
+      start_line: 100
+      end_line: 101
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "# Heading 1"
@@ -421,6 +623,11 @@ body:
           Raw: " ## Heading 2 with leading whitespace"
       - kind:
           Raw: "  # Heading 1 with leading whitespace"
+    span:
+      start: 3121
+      end: 3245
+      start_line: 103
+      end_line: 109
   - kind:
       Marker:
         depth: 3
@@ -428,14 +635,25 @@ body:
     children:
       - kind:
           Text: 2.2 Blocks
+    span:
+      start: 3247
+      end: 3261
+      start_line: 111
+      end_line: 111
   - kind: Paragraph
     children:
       - kind:
           Text: "Structured text can span multiple lines. A structural marker alone on a line with no content opens a block of its type, terminated with a matching marker of the same depth on its own line."
+    span:
+      start: 3263
+      end: 3451
+      start_line: 113
+      end_line: 115
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "- Reading notes"
@@ -451,14 +669,25 @@ body:
           Raw: " >"
       - kind:
           Raw: "--"
+    span:
+      start: 3453
+      end: 3550
+      start_line: 117
+      end_line: 125
   - kind: Paragraph
     children:
       - kind:
           Text: "Leading whitespace is trimmed while parsing structural markers. Authors can use it to visually group text without affecting nesting depth. The following block is equivalent to the above example:"
+    span:
+      start: 3552
+      end: 3746
+      start_line: 127
+      end_line: 129
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "- Reading notes"
@@ -474,6 +703,11 @@ body:
           Raw: ">"
       - kind:
           Raw: "--"
+    span:
+      start: 3748
+      end: 3841
+      start_line: 131
+      end_line: 139
   - kind:
       Marker:
         depth: 3
@@ -481,25 +715,34 @@ body:
     children:
       - kind:
           Text: 2.3 Tasks
+    span:
+      start: 3843
+      end: 3856
+      start_line: 141
+      end_line: 141
   - kind: Paragraph
     children:
       - kind:
           Text: "A task marker can be placed after any structural marker except "
+      - kind:
+          Delimiter: Verbatim
         children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "="
+              Raw: "="
+      - kind:
+          Text: " thematic breaks. Tasks are marked using square brackets: "
+      - kind:
+          Delimiter: Verbatim
+        children:
           - kind:
-              Text: " thematic breaks. Tasks are marked using square brackets: "
-          - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "[ ]"
-          - kind:
-              Text: ". The status of a task is determined by the character between brackets."
+              Raw: "[ ]"
+      - kind:
+          Text: ". The status of a task is determined by the character between brackets."
+    span:
+      start: 3858
+      end: 4062
+      start_line: 143
+      end_line: 145
   - kind: Table
     children:
       - kind:
@@ -515,6 +758,11 @@ body:
             children:
               - kind:
                   Text: Status
+        span:
+          start: 4064
+          end: 4094
+          start_line: 147
+          end_line: 147
       - kind:
           Delimiter: TableRow
         children:
@@ -531,6 +779,11 @@ body:
             children:
               - kind:
                   Text: Undone
+        span:
+          start: 4095
+          end: 4125
+          start_line: 148
+          end_line: 148
       - kind:
           Delimiter: TableRow
         children:
@@ -547,6 +800,11 @@ body:
             children:
               - kind:
                   Text: Done
+        span:
+          start: 4126
+          end: 4156
+          start_line: 149
+          end_line: 149
       - kind:
           Delimiter: TableRow
         children:
@@ -563,6 +821,11 @@ body:
             children:
               - kind:
                   Text: In progress
+        span:
+          start: 4157
+          end: 4187
+          start_line: 150
+          end_line: 150
       - kind:
           Delimiter: TableRow
         children:
@@ -579,6 +842,11 @@ body:
             children:
               - kind:
                   Text: Uncertain
+        span:
+          start: 4188
+          end: 4218
+          start_line: 151
+          end_line: 151
       - kind:
           Delimiter: TableRow
         children:
@@ -595,10 +863,21 @@ body:
             children:
               - kind:
                   Text: Cancelled
+        span:
+          start: 4219
+          end: 4249
+          start_line: 152
+          end_line: 152
+    span:
+      start: 4064
+      end: 4249
+      start_line: 147
+      end_line: 152
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "->: Grocery shopping"
@@ -612,13 +891,24 @@ body:
           Raw: "-o: Clean kitchen"
       - kind:
           Raw: "-x: Return sweater"
+    span:
+      start: 4251
+      end: 4358
+      start_line: 154
+      end_line: 161
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "-o:due=(date)2026-07-29: Renew passport"
+    span:
+      start: 4360
+      end: 4409
+      start_line: 163
+      end_line: 165
   - kind:
       Marker:
         depth: 2
@@ -626,14 +916,29 @@ body:
     children:
       - kind:
           Text: 3 Attributes
+    span:
+      start: 4411
+      end: 4426
+      start_line: 167
+      end_line: 167
   - kind: Paragraph
     children:
       - kind:
           Text: "Attributes are generic data attached to a marker or delimiter, terminated using a colon. After the colon an optional whitespace character is trimmed if present."
+    span:
+      start: 4428
+      end: 4588
+      start_line: 169
+      end_line: 171
   - kind: Paragraph
     children:
       - kind:
           Text: "Attribute names may contain any character except whitespace and the following reserved characters:"
+    span:
+      start: 4590
+      end: 4688
+      start_line: 173
+      end_line: 174
   - kind:
       Marker:
         depth: 1
@@ -644,8 +949,13 @@ body:
         children:
           - kind:
               Raw: ":"
-          - kind:
-              Text: " (0x3A)"
+      - kind:
+          Text: " (0x3A)"
+    span:
+      start: 4690
+      end: 4704
+      start_line: 176
+      end_line: 176
   - kind:
       Marker:
         depth: 1
@@ -656,8 +966,13 @@ body:
         children:
           - kind:
               Raw: (
-          - kind:
-              Text: " (0x28)"
+      - kind:
+          Text: " (0x28)"
+    span:
+      start: 4705
+      end: 4719
+      start_line: 177
+      end_line: 177
   - kind:
       Marker:
         depth: 1
@@ -668,8 +983,13 @@ body:
         children:
           - kind:
               Raw: )
-          - kind:
-              Text: " (0x29)"
+      - kind:
+          Text: " (0x29)"
+    span:
+      start: 4720
+      end: 4734
+      start_line: 178
+      end_line: 178
   - kind:
       Marker:
         depth: 1
@@ -680,8 +1000,13 @@ body:
         children:
           - kind:
               Raw: "["
-          - kind:
-              Text: " (0x5B)"
+      - kind:
+          Text: " (0x5B)"
+    span:
+      start: 4735
+      end: 4749
+      start_line: 179
+      end_line: 179
   - kind:
       Marker:
         depth: 1
@@ -692,8 +1017,13 @@ body:
         children:
           - kind:
               Raw: "]"
-          - kind:
-              Text: " (0x5D)"
+      - kind:
+          Text: " (0x5D)"
+    span:
+      start: 4750
+      end: 4764
+      start_line: 180
+      end_line: 180
   - kind:
       Marker:
         depth: 1
@@ -704,8 +1034,13 @@ body:
         children:
           - kind:
               Raw: "{"
-          - kind:
-              Text: " (0x7B)"
+      - kind:
+          Text: " (0x7B)"
+    span:
+      start: 4765
+      end: 4779
+      start_line: 181
+      end_line: 181
   - kind:
       Marker:
         depth: 1
@@ -716,8 +1051,13 @@ body:
         children:
           - kind:
               Raw: "}"
-          - kind:
-              Text: " (0x7D)"
+      - kind:
+          Text: " (0x7D)"
+    span:
+      start: 4780
+      end: 4794
+      start_line: 182
+      end_line: 182
   - kind:
       Marker:
         depth: 1
@@ -728,8 +1068,13 @@ body:
         children:
           - kind:
               Raw: "|"
-          - kind:
-              Text: " (0x7C)"
+      - kind:
+          Text: " (0x7C)"
+    span:
+      start: 4795
+      end: 4809
+      start_line: 183
+      end_line: 183
   - kind:
       Marker:
         depth: 1
@@ -740,8 +1085,13 @@ body:
         children:
           - kind:
               Raw: ;
-          - kind:
-              Text: " (0x3B)"
+      - kind:
+          Text: " (0x3B)"
+    span:
+      start: 4810
+      end: 4824
+      start_line: 184
+      end_line: 184
   - kind:
       Marker:
         depth: 1
@@ -752,8 +1102,13 @@ body:
         children:
           - kind:
               Raw: "\""
-          - kind:
-              Text: " (0x22)"
+      - kind:
+          Text: " (0x22)"
+    span:
+      start: 4825
+      end: 4839
+      start_line: 185
+      end_line: 185
   - kind:
       Marker:
         depth: 1
@@ -764,8 +1119,13 @@ body:
         children:
           - kind:
               Raw: "'"
-          - kind:
-              Text: " (0x27)"
+      - kind:
+          Text: " (0x27)"
+    span:
+      start: 4840
+      end: 4854
+      start_line: 186
+      end_line: 186
   - kind:
       Marker:
         depth: 1
@@ -776,8 +1136,13 @@ body:
         children:
           - kind:
               Raw: ","
-          - kind:
-              Text: " (0x2C)"
+      - kind:
+          Text: " (0x2C)"
+    span:
+      start: 4855
+      end: 4869
+      start_line: 187
+      end_line: 187
   - kind:
       Marker:
         depth: 1
@@ -788,8 +1153,13 @@ body:
         children:
           - kind:
               Raw: "~"
-          - kind:
-              Text: " (0x7E)"
+      - kind:
+          Text: " (0x7E)"
+    span:
+      start: 4870
+      end: 4884
+      start_line: 188
+      end_line: 188
   - kind:
       Marker:
         depth: 1
@@ -800,16 +1170,27 @@ body:
         children:
           - kind:
               Raw: "="
-          - kind:
-              Text: " (0x3D)"
+      - kind:
+          Text: " (0x3D)"
+    span:
+      start: 4885
+      end: 4899
+      start_line: 189
+      end_line: 189
   - kind: Paragraph
     children:
       - kind:
           Text: "All other printable characters, including digits and Unicode letters, are permitted."
+    span:
+      start: 4901
+      end: 4985
+      start_line: 191
+      end_line: 192
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "##red:My Heading"
@@ -819,6 +1200,11 @@ body:
           Raw: ""
       - kind:
           Raw: "- list item with **red: BOLD** content"
+    span:
+      start: 4987
+      end: 5071
+      start_line: 194
+      end_line: 199
   - kind:
       Marker:
         depth: 3
@@ -826,19 +1212,35 @@ body:
     children:
       - kind:
           Text: 3.1 Attribute Chains
+    span:
+      start: 5073
+      end: 5097
+      start_line: 201
+      end_line: 201
   - kind: Paragraph
     children:
       - kind:
           Text: Additional attributes are added as a chain beginning from the terminating colon of the prior attribute. Attribute chains must stay on the same line as their parent. A newline or whitespace character marks the beginning of text content.
+    span:
+      start: 5099
+      end: 5334
+      start_line: 203
+      end_line: 206
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "##red:underline: My Heading"
       - kind:
           Raw: "-o:due=(date)2026-07-29:owner=\"Jane\": Renew passport"
+    span:
+      start: 5336
+      end: 5426
+      start_line: 208
+      end_line: 211
   - kind:
       Marker:
         depth: 2
@@ -846,10 +1248,20 @@ body:
     children:
       - kind:
           Text: 4 Semantic Delimiters
+    span:
+      start: 5428
+      end: 5452
+      start_line: 213
+      end_line: 213
   - kind: Paragraph
     children:
       - kind:
           Text: "Semantic delimiters are used both inline and as blocks. All delimiters open and close with two characters. Delimiters of different kinds can nest, but delimiters cannot nest within themselves. Leading and trailing whitespace is trimmed within semantic delimiters."
+    span:
+      start: 5454
+      end: 5717
+      start_line: 215
+      end_line: 218
   - kind: Table
     children:
       - kind:
@@ -870,6 +1282,11 @@ body:
             children:
               - kind:
                   Text: Semantic Meaning
+        span:
+          start: 5719
+          end: 5781
+          start_line: 220
+          end_line: 220
       - kind:
           Delimiter: TableRow
         children:
@@ -891,6 +1308,11 @@ body:
             children:
               - kind:
                   Text: Bold
+        span:
+          start: 5782
+          end: 5844
+          start_line: 221
+          end_line: 221
       - kind:
           Delimiter: TableRow
         children:
@@ -912,6 +1334,11 @@ body:
             children:
               - kind:
                   Text: Italic
+        span:
+          start: 5845
+          end: 5907
+          start_line: 222
+          end_line: 222
       - kind:
           Delimiter: TableRow
         children:
@@ -920,18 +1347,22 @@ body:
             children:
               - kind:
                   Delimiter: Verbatim
+              - kind:
+                  Text: " "
+              - kind:
+                  Delimiter: Verbatim
                 children:
                   - kind:
-                      Text: " "
-                  - kind:
-                      Delimiter: Verbatim
-                    children:
-                      - kind:
-                          Raw: "|| verbatim        || Literal text        ||"
+                      Raw: "|| verbatim        || Literal text        ||"
           - kind:
               Delimiter: TableCell
           - kind:
               Delimiter: TableCell
+        span:
+          start: 5908
+          end: 5970
+          start_line: 223
+          end_line: 223
       - kind:
           Delimiter: TableRow
         children:
@@ -953,6 +1384,11 @@ body:
             children:
               - kind:
                   Text: Struck-through text
+        span:
+          start: 5971
+          end: 6033
+          start_line: 224
+          end_line: 224
       - kind:
           Delimiter: TableRow
         children:
@@ -974,6 +1410,11 @@ body:
             children:
               - kind:
                   Text: Table header
+        span:
+          start: 6034
+          end: 6096
+          start_line: 225
+          end_line: 225
       - kind:
           Delimiter: TableRow
         children:
@@ -995,6 +1436,11 @@ body:
             children:
               - kind:
                   Text: Table row
+        span:
+          start: 6097
+          end: 6159
+          start_line: 226
+          end_line: 226
       - kind:
           Delimiter: TableRow
         children:
@@ -1016,6 +1462,11 @@ body:
             children:
               - kind:
                   Text: Table cell
+        span:
+          start: 6160
+          end: 6222
+          start_line: 227
+          end_line: 227
       - kind:
           Delimiter: TableRow
         children:
@@ -1037,6 +1488,11 @@ body:
             children:
               - kind:
                   Text: Link target
+        span:
+          start: 6223
+          end: 6285
+          start_line: 228
+          end_line: 228
       - kind:
           Delimiter: TableRow
         children:
@@ -1058,6 +1514,11 @@ body:
             children:
               - kind:
                   Text: Link name
+        span:
+          start: 6286
+          end: 6348
+          start_line: 229
+          end_line: 229
       - kind:
           Delimiter: TableRow
         children:
@@ -1079,10 +1540,21 @@ body:
             children:
               - kind:
                   Text: Footnote content
+        span:
+          start: 6349
+          end: 6411
+          start_line: 230
+          end_line: 230
+    span:
+      start: 5719
+      end: 6411
+      start_line: 220
+      end_line: 230
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: The quick brown fox jumped over the **lazy dog.**
@@ -1102,6 +1574,11 @@ body:
           Raw: soft wrapping** in
       - kind:
           Raw: it.
+    span:
+      start: 6413
+      end: 6568
+      start_line: 232
+      end_line: 242
   - kind:
       Marker:
         depth: 3
@@ -1109,14 +1586,25 @@ body:
     children:
       - kind:
           Text: 4.1 Verbatim
+    span:
+      start: 6570
+      end: 6586
+      start_line: 244
+      end_line: 244
   - kind: Paragraph
     children:
       - kind:
           Text: "Text between verbatim delimiters is preserved literally. To indicate a syntax for highlighting when rendered, a lang attribute is attached to the marker or delimiter."
+    span:
+      start: 6588
+      end: 6754
+      start_line: 246
+      end_line: 248
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "Some code with \\``python: print(\"Hello, world!\")\\``"
@@ -1130,14 +1618,25 @@ body:
           Raw: "    print(f\"Hello, {name}!\")"
       - kind:
           Raw: "``"
+    span:
+      start: 6756
+      end: 6879
+      start_line: 250
+      end_line: 257
   - kind: Paragraph
     children:
       - kind:
           Text: Each line of a verbatim block is dedented by the whitespace preceding the opening verbatim delimiter.
+    span:
+      start: 6881
+      end: 6982
+      start_line: 259
+      end_line: 260
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "-"
@@ -1153,19 +1652,35 @@ body:
           Raw: "  ``"
       - kind:
           Raw: "-"
+    span:
+      start: 6984
+      end: 7078
+      start_line: 262
+      end_line: 270
   - kind: Paragraph
     children:
       - kind:
           Text: "When parsed, the verbatim text is dedented:"
+    span:
+      start: 7080
+      end: 7123
+      start_line: 272
+      end_line: 272
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: python
+      entries:
+        - value: python
     children:
       - kind:
           Raw: "def greet(name):"
       - kind:
           Raw: "  print(f\"Hello, {name}!\")"
+    span:
+      start: 7125
+      end: 7181
+      start_line: 274
+      end_line: 277
   - kind:
       Marker:
         depth: 3
@@ -1173,36 +1688,46 @@ body:
     children:
       - kind:
           Text: 4.2 Tables
+    span:
+      start: 7183
+      end: 7197
+      start_line: 279
+      end_line: 279
   - kind: Paragraph
     children:
       - kind:
           Text: "Tables are constructed using "
+      - kind:
+          Delimiter: Verbatim
         children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "#|"
+              Raw: "#|"
+      - kind:
+          Text: " table header and "
+      - kind:
+          Delimiter: Verbatim
+        children:
           - kind:
-              Text: " table header and "
+              Raw: "-|"
+      - kind:
+          Text: " table row delimiters. Within a row, cells are delimited using "
+      - kind:
+          Delimiter: Verbatim
+        children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "-|"
-          - kind:
-              Text: " table row delimiters. Within a row, cells are delimited using "
-          - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "||"
-          - kind:
-              Text: ". Table cells can include semantic delimiters for presentation of tabulated data. A table is terminated by an empty line."
+              Raw: "||"
+      - kind:
+          Text: ". Table cells can include semantic delimiters for presentation of tabulated data. A table is terminated by an empty line."
+    span:
+      start: 7199
+      end: 7448
+      start_line: 281
+      end_line: 284
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "#| Name       || Type      || Color    ||"
@@ -1212,25 +1737,47 @@ body:
           Raw: "-| **Carrot** || Vegetable || Orange   ||"
       - kind:
           Raw: "-| Blueberry  || Fruit     || Blue     ||"
+    span:
+      start: 7450
+      end: 7627
+      start_line: 286
+      end_line: 291
   - kind: Paragraph
     children:
       - kind:
           Text: Table rows may share a line.
+    span:
+      start: 7629
+      end: 7657
+      start_line: 293
+      end_line: 293
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "#| Name || Type || Color || -| Banana || Fruit || Yellow ||"
+    span:
+      start: 7659
+      end: 7728
+      start_line: 295
+      end_line: 297
   - kind: Paragraph
     children:
       - kind:
           Text: Table rows are not required to have the same number of cells. The number of columns in a table is determined by the row with the most cells. Missing cells are parsed as empty. Implementations may warn on row length mismatch.
+    span:
+      start: 7730
+      end: 7954
+      start_line: 299
+      end_line: 302
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "#| Name       || Type      || Color    ||"
@@ -1240,14 +1787,25 @@ body:
           Raw: "-| Carrot     || Vegetable || Orange   || Crunchy ||"
       - kind:
           Raw: "-| Blueberry  || Fruit     || Blue     ||"
+    span:
+      start: 7956
+      end: 8132
+      start_line: 304
+      end_line: 309
   - kind: Paragraph
     children:
       - kind:
           Text: "Tables may begin without a header:"
+    span:
+      start: 8134
+      end: 8168
+      start_line: 311
+      end_line: 311
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "-| Apple      || Fruit     ||"
@@ -1255,14 +1813,25 @@ body:
           Raw: "-| Carrot     || Vegetable || Orange   || Crunchy ||"
       - kind:
           Raw: "-| Blueberry  || Fruit     || Blue     ||"
+    span:
+      start: 8170
+      end: 8304
+      start_line: 313
+      end_line: 317
   - kind: Paragraph
     children:
       - kind:
           Text: "A table may have multiple or mid-table header rows:"
+    span:
+      start: 8306
+      end: 8357
+      start_line: 319
+      end_line: 319
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "#|            ||           ||          || Texture ||"
@@ -1276,6 +1845,11 @@ body:
           Raw: "#| Vegetables ||"
       - kind:
           Raw: "-| Carrot     || Vegetable || Orange   || Crunchy ||"
+    span:
+      start: 8359
+      end: 8605
+      start_line: 321
+      end_line: 328
   - kind:
       Marker:
         depth: 3
@@ -1283,36 +1857,46 @@ body:
     children:
       - kind:
           Text: 4.3 Links
+    span:
+      start: 8607
+      end: 8620
+      start_line: 330
+      end_line: 330
   - kind: Paragraph
     children:
       - kind:
           Text: "Links "
+      - kind:
+          Delimiter: Verbatim
         children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "[[  ]]"
+              Raw: "[[  ]]"
+      - kind:
+          Text: " are formatted with square brackets. A link can be bare, or it may have a name "
+      - kind:
+          Delimiter: Verbatim
+        children:
           - kind:
-              Text: " are formatted with square brackets. A link can be bare, or it may have a name "
+              Raw: ((  ))
+      - kind:
+          Text: " and footnote "
+      - kind:
+          Delimiter: Verbatim
+        children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: ((  ))
-          - kind:
-              Text: " and footnote "
-          - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "{{  }}"
-          - kind:
-              Text: "."
+              Raw: "{{  }}"
+      - kind:
+          Text: "."
+    span:
+      start: 8622
+      end: 8752
+      start_line: 332
+      end_line: 333
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "- [[https://kdl.dev]]"
@@ -1320,29 +1904,39 @@ body:
           Raw: "- [[https://kdl.dev]]((KDL))"
       - kind:
           Raw: "- [[https://kdl.dev]]((KDL)){{ A node-based document language }}"
+    span:
+      start: 8754
+      end: 8879
+      start_line: 335
+      end_line: 339
   - kind: Paragraph
     children:
       - kind:
           Text: "Link resolution is driven by attributes. A bare link is a document reference and is resolved against filenames and metadata "
+      - kind:
+          Delimiter: Verbatim
         children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: title
+              Raw: title
+      - kind:
+          Text: " fields. Headings can be referenced using the "
+      - kind:
+          Delimiter: Verbatim
+        children:
           - kind:
-              Text: " fields. Headings can be referenced using the "
-          - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "#"
-          - kind:
-              Text: " attribute. External targets are identified by their protocol attribute."
+              Raw: "#"
+      - kind:
+          Text: " attribute. External targets are identified by their protocol attribute."
+    span:
+      start: 8881
+      end: 9137
+      start_line: 341
+      end_line: 344
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "[[recipe]]               Document reference"
@@ -1350,27 +1944,42 @@ body:
           Raw: "[[#:Ingredients]]        Heading in current document"
       - kind:
           Raw: "[[https://kdl.dev]]      External via protocol attribute"
+    span:
+      start: 9139
+      end: 9302
+      start_line: 346
+      end_line: 350
   - kind: Paragraph
     children:
       - kind:
           Text: "Link transclusion is indicated using the transclude "
+      - kind:
+          Delimiter: Verbatim
         children:
           - kind:
-              Delimiter: Verbatim
-            children:
-              - kind:
-                  Raw: "!"
-          - kind:
-              Text: " attribute. Transclusion works for both documents and media."
+              Raw: "!"
+      - kind:
+          Text: " attribute. Transclusion works for both documents and media."
+    span:
+      start: 9304
+      end: 9421
+      start_line: 352
+      end_line: 353
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: "[[!:recipe]]       Document Transclusion"
       - kind:
           Raw: "[[!:image.png]]    Image Transclusion"
+    span:
+      start: 9423
+      end: 9511
+      start_line: 355
+      end_line: 358
   - kind:
       Marker:
         depth: 3
@@ -1378,14 +1987,25 @@ body:
     children:
       - kind:
           Text: 4.4 Footnotes
+    span:
+      start: 9513
+      end: 9530
+      start_line: 360
+      end_line: 360
   - kind: Paragraph
     children:
       - kind:
           Text: "When footnote contents do not fit inline, they may be linked from elsewhere in the document:"
+    span:
+      start: 9532
+      end: 9624
+      start_line: 362
+      end_line: 363
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: A good marinara starts with San Marzano
@@ -1397,14 +2017,25 @@ body:
           Raw: ""
       - kind:
           Raw: "[[tomato]]{{ A fruit not a vegetable }}"
+    span:
+      start: 9626
+      end: 9775
+      start_line: 365
+      end_line: 371
   - kind: Paragraph
     children:
       - kind:
           Text: "Footnotes can appear without a link. If unattached, a footnote is indexed by its position in the document."
+    span:
+      start: 9777
+      end: 9883
+      start_line: 373
+      end_line: 374
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: mog
+      entries:
+        - value: mog
     children:
       - kind:
           Raw: A good marinara starts with San Marzano
@@ -1412,3 +2043,8 @@ body:
           Raw: "tomato{{ A tomato is a fruit not a vegetable }} and a generous amount"
       - kind:
           Raw: of olive oil.
+    span:
+      start: 9885
+      end: 10018
+      start_line: 376
+      end_line: 380

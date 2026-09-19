@@ -1,25 +1,28 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/footnotes-1.mg
 ---
-meta: ~
 body:
   - kind: Paragraph
     children:
       - kind:
           Text: "A good marinara starts with San Marzano "
+      - kind:
+          Link: tomato
         children:
           - kind:
-              Link: tomato
+              Delimiter: LinkName
             children:
               - kind:
-                  Delimiter: LinkName
-                children:
-                  - kind:
-                      Text: tomatoes
-          - kind:
-              Text: " and a generous amount of olive oil."
+                  Text: tomatoes
+      - kind:
+          Text: " and a generous amount of olive oil."
+    span:
+      start: 0
+      end: 98
+      start_line: 0
+      end_line: 2
   - kind: Paragraph
     children:
       - kind:
@@ -30,3 +33,8 @@ body:
             children:
               - kind:
                   Text: A fruit not a vegetable
+    span:
+      start: 100
+      end: 139
+      start_line: 4
+      end_line: 4

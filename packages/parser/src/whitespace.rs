@@ -1,4 +1,4 @@
-const WHITESPACE: [char; 2] = [' ', '\t'];
+pub(crate) const WHITESPACE: [char; 2] = [' ', '\t'];
 
 pub(crate) fn trim(text: &str) -> &str {
     text.trim_matches(WHITESPACE)

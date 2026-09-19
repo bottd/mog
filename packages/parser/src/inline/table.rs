@@ -1,13 +1,14 @@
 use crate::{
-    Delimiter, Node, NodeKind, inline::resolve_nodes, node::attribute::parse_delimiter_attributes,
-    whitespace,
+    Delimiter, Delimiters, Node, NodeKind, node::attribute::parse_delimiter_attributes, whitespace,
 };
 
-use super::raw::raw_until;
+use winnow::stream::{Offset, Stream};
+
+use super::raw::{parse_raw, take_until_closing};
 
 // TODO: track column width to pad rows so table has same cols in all row
 // or maybe just do the padding at the end
-pub(super) fn resolve_table(rows: Vec<Node>, ancestors: &[Delimiter]) -> Vec<Node> {
+pub(super) fn resolve_table(rows: Vec<Node>, ancestors: Delimiters) -> Vec<Node> {
     let mut rows: Vec<Node> = rows
         .into_iter()
         .flat_map(|row| resolve_row(row, ancestors))
@@ -19,76 +20,82 @@ pub(super) fn resolve_table(rows: Vec<Node>, ancestors: &[Delimiter]) -> Vec<Nod
 }
 
 fn pad_table(rows: &mut [Node]) {
-    let width = rows.iter().map(row_len).max().unwrap_or_default();
+    let width = rows
+        .iter()
+        .map(|row| row.children.len())
+        .max()
+        .unwrap_or_default();
 
-    for row in rows {
-        if row_len(row) < width {
-            row.children.get_or_insert_default().resize_with(width, || {
-                Node::empty(NodeKind::Delimiter(Delimiter::TableCell))
-            });
-        }
+    // width is the maximum, so this only ever grows a row
+    for row in rows.iter_mut().filter(|row| !row.is_attributes()) {
+        row.children.resize_with(width, || {
+            Node::empty(NodeKind::Delimiter(Delimiter::TableCell))
+        });
     }
 }
 
-fn row_len(row: &Node) -> usize {
-    row.children.as_ref().map_or(0, Vec::len)
-}
+fn resolve_row(row: Node, ancestors: Delimiters) -> Vec<Node> {
+    if row.is_attributes() {
+        return vec![row];
+    }
 
-fn resolve_row(row: Node, ancestors: &[Delimiter]) -> Vec<Node> {
-    let text = row.get_raw_text();
-    let bytes = text.as_bytes();
+    // the row's only child is its raw text, taken here rather than copied
+    let mut current = row;
+    let text = match current.children.pop().map(|child| child.kind) {
+        Some(NodeKind::Raw(text)) => text,
+        _ => String::new(),
+    };
 
     let mut rows = Vec::new();
-    let mut current = Node {
-        kind: row.kind,
-        attributes: row.attributes,
-        children: None,
-    };
-    let mut cell_start = 0;
-    let mut position = 0;
+    let mut input = text.as_str();
+    // where the cell being scanned began; the span back to it is its content
+    let mut cell = input;
 
-    while position < bytes.len() {
-        if bytes[position] == b'\\' && Delimiter::at(bytes, position + 1).is_some() {
-            position += 3;
+    while !input.is_empty() {
+        // an escaped delimiter is cell content
+        if input
+            .strip_prefix('\\')
+            .is_some_and(|escaped| Delimiter::at(escaped).is_some())
+        {
+            input.next_slice(3);
             continue;
         }
 
-        if Delimiter::at(bytes, position) == Some(Delimiter::Verbatim) {
-            let (_, next) = raw_until(&text, position + 2, Delimiter::Verbatim);
-            position = next;
-            continue;
+        match Delimiter::at(input) {
+            // a verbatim span is opaque, so a || inside it does not end the cell
+            Some(Delimiter::Verbatim) => {
+                input.next_slice(2);
+                // Verbatim is symmetric, so its opening pair is also its closer
+                take_until_closing(&mut input, Delimiter::Verbatim.opening());
+                continue;
+            }
+            Some(Delimiter::TableCell) => {}
+            _ => {
+                input.next_token();
+                continue;
+            }
         }
 
-        if Delimiter::at(bytes, position) != Some(Delimiter::TableCell) {
-            position += 1;
-            continue;
-        }
-
-        push_cell(&mut current, &text[cell_start..position], ancestors);
-        position += 2;
-        cell_start = position;
+        push_cell(&mut current, &cell[..input.offset_from(&cell)], ancestors);
+        input.next_slice(2);
+        cell = input;
 
         // a row delimiter where the next cell would start opens a new row
-        let rest = whitespace::trim_start(&text[position..]);
-        if let Some(delimiter) = Delimiter::at(rest.as_bytes(), 0)
+        let rest = whitespace::trim_start(input);
+        if let Some(delimiter) = Delimiter::at(rest)
             && matches!(delimiter, Delimiter::TableHeader | Delimiter::TableRow)
         {
-            let (attributes, remainder) =
-                parse_delimiter_attributes(&rest[2..], delimiter.attribute_boundary());
+            let (attributes, remainder) = parse_delimiter_attributes(&rest[2..], delimiter);
 
             rows.push(current);
-            current = Node {
-                kind: NodeKind::Delimiter(delimiter),
-                attributes,
-                children: None,
-            };
+            current = Node::new(NodeKind::Delimiter(delimiter), attributes);
 
-            position = text.len() - remainder.len();
-            cell_start = position;
+            input = remainder;
+            cell = input;
         }
     }
 
-    let trailing = whitespace::trim(&text[cell_start..]);
+    let trailing = whitespace::trim(cell);
     if !trailing.is_empty() {
         push_cell(&mut current, trailing, ancestors);
     }
@@ -97,11 +104,10 @@ fn resolve_row(row: Node, ancestors: &[Delimiter]) -> Vec<Node> {
     rows
 }
 
-fn push_cell(row: &mut Node, content: &str, ancestors: &[Delimiter]) {
+fn push_cell(row: &mut Node, content: &str, ancestors: Delimiters) {
     let content = whitespace::trim(content);
-    row.push_child(Node {
-        kind: NodeKind::Delimiter(Delimiter::TableCell),
-        attributes: None,
-        children: (!content.is_empty()).then(|| resolve_nodes(vec![Node::raw(content)], ancestors)),
-    });
+    let mut cell = Node::empty(NodeKind::Delimiter(Delimiter::TableCell));
+    cell.children = parse_raw(content, ancestors);
+
+    row.push_child(cell);
 }

@@ -1,22 +1,27 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/links-3.mg
 ---
-meta: ~
 body:
   - kind: Paragraph
     children:
       - kind:
           Link: recipe
         attributes:
-          - value: "!"
-        children:
-          - kind:
-              Text: "       Document Transclusion "
-          - kind:
-              Link: image.png
-            attributes:
-              - value: "!"
-          - kind:
-              Text: "    Image Transclusion"
+          entries:
+            - value: "!"
+      - kind:
+          Text: "       Document Transclusion "
+      - kind:
+          Link: image.png
+        attributes:
+          entries:
+            - value: "!"
+      - kind:
+          Text: "    Image Transclusion"
+    span:
+      start: 0
+      end: 78
+      start_line: 0
+      end_line: 1

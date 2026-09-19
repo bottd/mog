@@ -1,28 +1,39 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/attributes.mg
 ---
-meta: ~
 body:
   - kind:
       Marker:
         depth: 2
         kind: Heading
     attributes:
-      - value: red
+      entries:
+        - value: red
     children:
       - kind:
           Text: My Heading
+    span:
+      start: 0
+      end: 16
+      start_line: 0
+      end_line: 0
   - kind:
       Marker:
         depth: 2
         kind: Heading
     attributes:
-      - value: red
+      entries:
+        - value: red
     children:
       - kind:
           Text: My Heading
+    span:
+      start: 17
+      end: 34
+      start_line: 1
+      end_line: 1
   - kind:
       Marker:
         depth: 1
@@ -30,13 +41,18 @@ body:
     children:
       - kind:
           Text: "list item with "
+      - kind:
+          Delimiter: Strong
+        attributes:
+          entries:
+            - value: red
         children:
           - kind:
-              Delimiter: Strong
-            attributes:
-              - value: red
-            children:
-              - kind:
-                  Text: BOLD
-          - kind:
-              Text: " content"
+              Text: BOLD
+      - kind:
+          Text: " content"
+    span:
+      start: 36
+      end: 74
+      start_line: 3
+      end_line: 3

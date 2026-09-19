@@ -1,113 +1,163 @@
-use crate::{Delimiter, Node, NodeKind, node::attribute::parse_delimiter_attributes, whitespace};
+use std::borrow::Cow;
+
+use winnow::stream::{Offset, Stream};
+
+use crate::node::attribute::{AttributesExt, parse_attribute_block};
+use crate::{
+    Delimiter, Delimiters, Node, NodeKind, node::attribute::parse_delimiter_attributes, whitespace,
+};
 
 use super::parser::Parser;
 
-pub(super) fn parse_raw(text: &str, ancestors: &[Delimiter]) -> Vec<Node> {
+// the unconsumed source is the cursor: every step advances it in place, so
+// there is no separate index to keep in sync
+pub(super) fn parse_raw(text: &str, ancestors: Delimiters) -> Vec<Node> {
     let mut parser = Parser::default();
-    let bytes = text.as_bytes();
-    let mut position = 0;
+    let mut input = text;
 
-    while position < bytes.len() {
-        // escaping
-        if bytes[position] == b'\\' && position + 1 < bytes.len() {
-            let escaped = &text[position + 1..];
-            let width = match Delimiter::at(bytes, position + 1) {
+    while !input.is_empty() {
+        // a backslash makes the delimiter or character after it literal; a
+        // trailing backslash is literal itself
+        if let Some(escaped) = input.strip_prefix('\\')
+            && let Some(first) = escaped.chars().next()
+        {
+            let width = match Delimiter::at(escaped) {
                 Some(_) => 2,
-                None => escaped.chars().next().expect("char").len_utf8(),
+                None => first.len_utf8(),
             };
-            parser.buffer.push_str(&escaped[..width]);
-            position += 1 + width;
+
+            input.next_slice(1);
+            parser.buffer.push_str(input.next_slice(width));
             continue;
         }
 
-        if let Some(delimiter) = Delimiter::at(bytes, position) {
-            let pair = [bytes[position], bytes[position + 1]];
-            let closing = delimiter.closing();
-
+        if let Some(delimiter) = Delimiter::at(input) {
             // TODO: position < self.stack.len() - 1
             // error, everything on stack between top and [position] is unclosed
 
             // TODO: node.attributes.is_some()
             // error, unclosed verbatim or attribute on closing verbatim
-            if closing == Some(pair)
+            if delimiter.closes(input)
                 && parser.stack.last().map(|open| &open.kind)
                     == Some(&NodeKind::Delimiter(delimiter))
             {
-                position += 2;
+                input.next_slice(2);
                 parser.close_node();
                 continue;
             }
 
-            if delimiter.opening() == pair
-                && closing.is_some()
-                && !ancestors.contains(&delimiter)
+            if let Some(closing) = delimiter.closing()
+                && delimiter.opens(input)
+                && !ancestors.contains(delimiter)
                 && !parser
                     .stack
                     .iter()
                     .any(|open| open.kind == NodeKind::Delimiter(delimiter))
             {
-                let (attributes, rest) = parse_delimiter_attributes(
-                    &text[position + 2..],
-                    delimiter.attribute_boundary(),
-                );
-                position = text.len() - rest.len();
-
-                let mut node = Node {
-                    kind: NodeKind::Delimiter(delimiter),
-                    attributes,
-                    children: None,
-                };
-
-                parser.flush();
-                match delimiter {
-                    Delimiter::Verbatim => {
-                        let (content, next) = raw_until(text, position, delimiter);
-                        let content = whitespace::trim(&content);
-                        node.children = (!content.is_empty()).then(|| vec![Node::raw(content)]);
-                        parser.push_node(node);
-                        position = next;
-                    }
-                    Delimiter::Link => {
-                        let (target, next) = raw_until(text, position, delimiter);
-                        node.kind = NodeKind::Link(whitespace::trim(&target).to_owned());
-                        parser.push_node(node);
-                        position = next;
-                    }
-                    _ => parser.stack.push(node),
-                }
+                input.next_slice(2);
+                open_delimiter(&mut parser, &mut input, delimiter, closing);
                 continue;
             }
         }
 
-        let ch = text[position..].chars().next().expect("char");
+        let Some(ch) = input.next_token() else {
+            break;
+        };
+
         parser.push_char(ch);
-        position += ch.len_utf8();
     }
 
     parser.collect()
 }
 
-pub(super) fn raw_until(text: &str, start: usize, delimiter: Delimiter) -> (String, usize) {
-    let bytes = text.as_bytes();
-    let closing = delimiter.closing().expect("Verbatim and Link close");
-    let mut content = String::new();
-    let mut position = start;
+// the cursor sits just past the opening pair; consumes the attribute chain and
+// whatever body the delimiter owns
+fn open_delimiter(parser: &mut Parser, input: &mut &str, delimiter: Delimiter, closing: [u8; 2]) {
+    let (attributes, rest) = parse_delimiter_attributes(input, delimiter);
+    *input = rest;
 
-    while position < bytes.len() {
-        if bytes[position] == b'\\' && bytes[position + 1..].starts_with(&closing) {
-            content.push_str(&text[position + 1..position + 3]);
-            position += 3;
-            continue;
+    let mut node = Node::new(NodeKind::Delimiter(delimiter), attributes);
+
+    match delimiter {
+        Delimiter::Verbatim => {
+            let content = take_until_closing(input, closing);
+            let content = whitespace::trim(&content);
+
+            // an attribute node in place of the block; invalid KDL stays verbatim
+            if node.attributes.is_attribute_chain()
+                && let Ok(attributes) = parse_attribute_block(content)
+            {
+                parser.absorb_separator(input);
+                parser.flush();
+                parser.push_node(Node::attributes(attributes));
+                return;
+            }
+
+            node.children = Node::raw_children(content);
         }
-        if bytes[position..].starts_with(&closing) {
-            return (content, position + 2);
+        Delimiter::Link => {
+            node.kind =
+                NodeKind::Link(whitespace::trim(&take_until_closing(input, closing)).to_owned());
         }
-        let ch = text[position..].chars().next().expect("char");
-        content.push(ch);
-        position += ch.len_utf8();
+        _ => {
+            parser.flush();
+            parser.stack.push(node);
+            return;
+        }
     }
 
-    // TODO: position >= bytes.len()
-    // error, unclosed delimiter
-    (content, bytes.len())
+    parser.flush();
+    parser.push_node(node);
+}
+
+// the content up to the closing pair, consuming the closer; an escaped closer
+// is literal content, and is the only case that cannot be borrowed
+pub(super) fn take_until_closing<'a>(input: &mut &'a str, closing: [u8; 2]) -> Cow<'a, str> {
+    let start = *input;
+
+    while !input.is_empty() {
+        if input.starts_with('\\') {
+            return Cow::Owned(unescape_until_closing(input, start, closing));
+        }
+
+        if input.as_bytes().starts_with(&closing) {
+            let content = &start[..input.offset_from(&start)];
+            input.next_slice(2);
+            return Cow::Borrowed(content);
+        }
+
+        input.next_token();
+    }
+
+    // TODO: error, unclosed delimiter
+    Cow::Borrowed(start)
+}
+
+// resumes the scan with an owned buffer once a backslash is seen
+fn unescape_until_closing(input: &mut &str, start: &str, closing: [u8; 2]) -> String {
+    let mut content = String::from(&start[..input.offset_from(&start)]);
+
+    while !input.is_empty() {
+        if let Some(escaped) = input.strip_prefix('\\')
+            && escaped.as_bytes().starts_with(&closing)
+        {
+            input.next_slice(1);
+            content.push_str(input.next_slice(2));
+            continue;
+        }
+
+        if input.as_bytes().starts_with(&closing) {
+            input.next_slice(2);
+            return content;
+        }
+
+        let Some(ch) = input.next_token() else {
+            break;
+        };
+
+        content.push(ch);
+    }
+
+    // TODO: error, unclosed delimiter
+    content
 }

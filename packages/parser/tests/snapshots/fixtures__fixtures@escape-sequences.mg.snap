@@ -1,11 +1,15 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/escape-sequences.mg
 ---
-meta: ~
 body:
   - kind: Paragraph
     children:
       - kind:
           Text: "**this is not bold**"
+    span:
+      start: 0
+      end: 22
+      start_line: 0
+      end_line: 0

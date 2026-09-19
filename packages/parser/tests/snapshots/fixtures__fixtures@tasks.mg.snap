@@ -1,9 +1,8 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/tasks.mg
 ---
-meta: ~
 body:
   - kind:
       Marker:
@@ -12,6 +11,11 @@ body:
     children:
       - kind:
           Text: "[~] Grocery shopping"
+    span:
+      start: 0
+      end: 22
+      start_line: 0
+      end_line: 0
   - kind:
       Marker:
         depth: 2
@@ -19,6 +23,11 @@ body:
     children:
       - kind:
           Text: "[x] Eggs"
+    span:
+      start: 23
+      end: 34
+      start_line: 1
+      end_line: 1
   - kind:
       Marker:
         depth: 2
@@ -26,6 +35,11 @@ body:
     children:
       - kind:
           Text: "[~] Milk"
+    span:
+      start: 35
+      end: 46
+      start_line: 2
+      end_line: 2
   - kind:
       Marker:
         depth: 2
@@ -33,6 +47,11 @@ body:
     children:
       - kind:
           Text: "[?] Oat or almond?"
+    span:
+      start: 47
+      end: 68
+      start_line: 3
+      end_line: 3
   - kind:
       Marker:
         depth: 1
@@ -40,6 +59,11 @@ body:
     children:
       - kind:
           Text: "[ ] Clean kitchen"
+    span:
+      start: 69
+      end: 88
+      start_line: 4
+      end_line: 4
   - kind:
       Marker:
         depth: 1
@@ -47,6 +71,11 @@ body:
     children:
       - kind:
           Text: "[!] Call dentist"
+    span:
+      start: 89
+      end: 107
+      start_line: 5
+      end_line: 5
   - kind:
       Marker:
         depth: 1
@@ -54,3 +83,8 @@ body:
     children:
       - kind:
           Text: "[-] Return sweater"
+    span:
+      start: 108
+      end: 128
+      start_line: 6
+      end_line: 6

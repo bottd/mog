@@ -1,0 +1,32 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/attribute-unclosed.mg
+---
+body:
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: A paragraph before the block
+    span:
+      start: 0
+      end: 28
+      start_line: 0
+      end_line: 0
+  - kind:
+      Delimiter: Verbatim
+    attributes:
+      entries:
+        - value: attr
+    children:
+      - kind:
+          Raw: "title \"X\""
+      - kind:
+          Raw: ""
+      - kind:
+          Raw: "Hello world, the closing delimiter was forgotten"
+    span:
+      start: 29
+      end: 96
+      start_line: 1
+      end_line: 4

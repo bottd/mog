@@ -1,0 +1,131 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/attribute-merge.mg
+---
+attributes:
+  children:
+    - name: title
+      value:
+        entries:
+          - value: first
+    - name: author
+      value:
+        entries:
+          - value: A
+    - name: title
+      value:
+        entries:
+          - value: second
+    - name: tag
+      value:
+        entries:
+          - value: x
+    - name: tag
+      value:
+        entries:
+          - value: y
+    - name: authors
+      value:
+        children:
+          - name: author
+            value:
+              entries:
+                - value: A
+          - name: author
+            value:
+              entries:
+                - value: B
+  blocks:
+    - start: 0
+      end: 35
+      start_line: 0
+      end_line: 3
+    - start: 37
+      end: 116
+      start_line: 5
+      end_line: 13
+body:
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Root blocks append into one children document and repeated names are kept, as in KDL."
+    span:
+      start: 118
+      end: 203
+      start_line: 15
+      end_line: 15
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    attributes:
+      entries:
+        - name: color
+          value: fromchain
+      children:
+        - name: color
+          value:
+            entries:
+              - value: fromblock
+        - name: weight
+          value:
+            entries:
+              - value: 2
+      blocks:
+        - start: 225
+          end: 262
+          start_line: 18
+          end_line: 21
+    children:
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: "Chain entries and block children are separate namespaces, so both colors remain"
+        span:
+          start: 263
+          end: 342
+          start_line: 22
+          end_line: 22
+    span:
+      start: 205
+      end: 344
+      start_line: 17
+      end_line: 23
+    fence:
+      start: 205
+      end: 224
+      start_line: 17
+      end_line: 17
+  - kind:
+      Marker:
+        depth: 2
+        kind: Heading
+    attributes:
+      entries:
+        - name: a
+          value: 2
+    children:
+      - kind:
+          Text: A repeated property in a chain resolves to the rightmost value
+    span:
+      start: 346
+      end: 419
+      start_line: 25
+      end_line: 25
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    attributes:
+      entries:
+        - value: red
+        - value: underline
+    children:
+      - kind:
+          Text: Arguments have no name to collide on
+    span:
+      start: 421
+      end: 473
+      start_line: 27
+      end_line: 27

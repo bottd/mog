@@ -1,9 +1,8 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/blocks-1.mg
 ---
-meta: ~
 body:
   - kind:
       Marker:
@@ -12,6 +11,11 @@ body:
     children:
       - kind:
           Text: Reading notes
+    span:
+      start: 0
+      end: 15
+      start_line: 0
+      end_line: 0
   - kind:
       Marker:
         depth: 2
@@ -21,6 +25,11 @@ body:
         children:
           - kind:
               Text: "Chapter 3 was particularly relevant:"
+        span:
+          start: 19
+          end: 55
+          start_line: 2
+          end_line: 2
       - kind:
           Marker:
             depth: 1
@@ -30,3 +39,28 @@ body:
             children:
               - kind:
                   Text: quote from chapter 3
+            span:
+              start: 61
+              end: 81
+              start_line: 4
+              end_line: 4
+        span:
+          start: 57
+          end: 84
+          start_line: 3
+          end_line: 5
+        fence:
+          start: 57
+          end: 58
+          start_line: 3
+          end_line: 3
+    span:
+      start: 16
+      end: 87
+      start_line: 1
+      end_line: 6
+    fence:
+      start: 16
+      end: 18
+      start_line: 1
+      end_line: 1

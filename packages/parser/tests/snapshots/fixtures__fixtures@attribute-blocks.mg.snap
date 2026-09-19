@@ -1,0 +1,367 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/attribute-blocks.mg
+---
+body:
+  - kind: Attributes
+    attributes:
+      children:
+        - name: title
+          value:
+            entries:
+              - value: My Document
+        - name: authors
+          value:
+            entries:
+              - value: John
+              - value: Jane
+    span:
+      start: 0
+      end: 52
+      start_line: 0
+      end_line: 3
+  - kind: Attributes
+    attributes:
+      children:
+        - name: date
+          value:
+            entries:
+              - value: 2026-04-15
+        - name: version
+          value:
+            entries:
+              - value: 1
+    span:
+      start: 54
+      end: 92
+      start_line: 5
+      end_line: 8
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: Root level attribute blocks merge into the document.
+    span:
+      start: 94
+      end: 146
+      start_line: 10
+      end_line: 10
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind: Attributes
+        attributes:
+          children:
+            - name: color
+              value:
+                entries:
+                  - value: red
+        span:
+          start: 150
+          end: 172
+          start_line: 13
+          end_line: 15
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: List item with attributes
+        span:
+          start: 173
+          end: 198
+          start_line: 16
+          end_line: 16
+    span:
+      start: 148
+      end: 200
+      start_line: 12
+      end_line: 17
+    fence:
+      start: 148
+      end: 149
+      start_line: 12
+      end_line: 12
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    attributes:
+      entries:
+        - value: red
+    children:
+      - kind: Attributes
+        attributes:
+          children:
+            - name: weight
+              value:
+                entries:
+                  - value: 2
+        span:
+          start: 208
+          end: 227
+          start_line: 20
+          end_line: 22
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: Chained and block attributes combine
+        span:
+          start: 228
+          end: 264
+          start_line: 23
+          end_line: 23
+    span:
+      start: 202
+      end: 266
+      start_line: 19
+      end_line: 24
+    fence:
+      start: 202
+      end: 207
+      start_line: 19
+      end_line: 19
+  - kind:
+      Marker:
+        depth: 1
+        kind: Heading
+    children:
+      - kind:
+          Text: Inline marker owns the block directly below it
+      - kind: Attributes
+        attributes:
+          children:
+            - name: attached
+              value:
+                entries:
+                  - value: to heading
+        span:
+          start: 317
+          end: 349
+          start_line: 27
+          end_line: 29
+    span:
+      start: 268
+      end: 349
+      start_line: 26
+      end_line: 29
+    fence:
+      start: 268
+      end: 316
+      start_line: 26
+      end_line: 26
+  - kind:
+      Marker:
+        depth: 1
+        kind: Heading
+    children:
+      - kind: Attributes
+        attributes:
+          children:
+            - name: class
+              value:
+                entries:
+                  - value: note
+        span:
+          start: 353
+          end: 376
+          start_line: 32
+          end_line: 34
+      - kind: Paragraph
+        children:
+          - kind:
+              Text: Block form marker parents the attribute block
+        span:
+          start: 377
+          end: 422
+          start_line: 35
+          end_line: 35
+    span:
+      start: 351
+      end: 424
+      start_line: 31
+      end_line: 36
+    fence:
+      start: 351
+      end: 352
+      start_line: 31
+      end_line: 31
+  - kind:
+      Delimiter: Verbatim
+    attributes:
+      entries:
+        - value: rust
+        - value: attr
+    children:
+      - kind:
+          Raw: "attr is not the only attribute, so this stays verbatim"
+    span:
+      start: 426
+      end: 496
+      start_line: 38
+      end_line: 40
+  - kind: Attributes
+    span:
+      start: 498
+      end: 508
+      start_line: 42
+      end_line: 43
+  - kind: Table
+    children:
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: a
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: b
+        span:
+          start: 510
+          end: 522
+          start_line: 45
+          end_line: 45
+      - kind: Attributes
+        attributes:
+          children:
+            - name: caption
+              value:
+                entries:
+                  - value: between rows
+        span:
+          start: 523
+          end: 556
+          start_line: 46
+          end_line: 48
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: c
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: d
+        span:
+          start: 557
+          end: 569
+          start_line: 49
+          end_line: 49
+    span:
+      start: 510
+      end: 569
+      start_line: 45
+      end_line: 49
+  - kind:
+      Delimiter: Verbatim
+    attributes:
+      entries:
+        - value: attr
+    children:
+      - kind:
+          Raw: "node \"unterminated"
+    span:
+      start: 571
+      end: 600
+      start_line: 51
+      end_line: 53
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: Attributes attach to the paragraph they interrupt
+      - kind: Attributes
+        attributes:
+          children:
+            - name: color
+              value:
+                entries:
+                  - value: red
+        span:
+          start: 652
+          end: 674
+          start_line: 56
+          end_line: 58
+    span:
+      start: 602
+      end: 674
+      start_line: 55
+      end_line: 58
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: Attributes after a blank line belong to the document instead
+    span:
+      start: 676
+      end: 736
+      start_line: 60
+      end_line: 60
+  - kind: Attributes
+    attributes:
+      children:
+        - name: scope
+          value:
+            entries:
+              - value: document
+    span:
+      start: 738
+      end: 765
+      start_line: 62
+      end_line: 64
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: A paragraph resumed after a block keeps the space the line break stands for.
+      - kind: Attributes
+        attributes:
+          children:
+            - name: resumed
+              value:
+                entries:
+                  - value: across the block
+        span:
+          start: 787
+          end: 824
+          start_line: 67
+          end_line: 69
+    span:
+      start: 767
+      end: 881
+      start_line: 66
+      end_line: 70
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "A delimiter left open "
+      - kind:
+          Delimiter: Strong
+        children:
+          - kind:
+              Text: across the block
+      - kind:
+          Text: " still closes, and the paragraph owns the attributes."
+      - kind: Attributes
+        attributes:
+          children:
+            - name: spans
+              value:
+                entries:
+                  - value: the block
+        span:
+          start: 914
+          end: 942
+          start_line: 73
+          end_line: 75
+    span:
+      start: 883
+      end: 1007
+      start_line: 72
+      end_line: 76

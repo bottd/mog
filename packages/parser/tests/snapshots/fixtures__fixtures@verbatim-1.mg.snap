@@ -1,28 +1,38 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/verbatim-1.mg
 ---
-meta: ~
 body:
   - kind: Paragraph
     children:
       - kind:
           Text: "Some code with "
+      - kind:
+          Delimiter: Verbatim
+        attributes:
+          entries:
+            - value: python
         children:
           - kind:
-              Delimiter: Verbatim
-            attributes:
-              - value: python
-            children:
-              - kind:
-                  Raw: "print(\"Hello, world!\")"
+              Raw: "print(\"Hello, world!\")"
+    span:
+      start: 0
+      end: 49
+      start_line: 0
+      end_line: 0
   - kind:
       Delimiter: Verbatim
     attributes:
-      - value: python
+      entries:
+        - value: python
     children:
       - kind:
           Raw: "def greet(name):"
       - kind:
           Raw: "    print(f\"Hello, {name}!\")"
+    span:
+      start: 51
+      end: 109
+      start_line: 2
+      end_line: 5

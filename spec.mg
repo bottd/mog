@@ -1,4 +1,4 @@
-``meta:
+``attr:
 title "Mog Syntax Specification"
 authors "Drake Bott"
 version 0.1
@@ -60,7 +60,7 @@ Metadata may appear at the beginning of a document, delimited by two
 hyphens. Data is formatted in [[https://kdl.dev]]((KDL)) syntax:
 
 ``mog:
-\``meta:
+\``attr:
 title "My Document"
 authors "John" "Jane"
 date "2026-04-15"

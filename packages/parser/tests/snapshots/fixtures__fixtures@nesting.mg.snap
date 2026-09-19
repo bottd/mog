@@ -1,9 +1,8 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/nesting.mg
 ---
-meta: ~
 body:
   - kind:
       Marker:
@@ -12,6 +11,11 @@ body:
     children:
       - kind:
           Text: Heading 1
+    span:
+      start: 0
+      end: 11
+      start_line: 0
+      end_line: 0
   - kind:
       Marker:
         depth: 2
@@ -19,6 +23,11 @@ body:
     children:
       - kind:
           Text: Heading 2
+    span:
+      start: 12
+      end: 24
+      start_line: 1
+      end_line: 1
   - kind:
       Marker:
         depth: 3
@@ -26,6 +35,11 @@ body:
     children:
       - kind:
           Text: Heading 3
+    span:
+      start: 25
+      end: 38
+      start_line: 2
+      end_line: 2
   - kind:
       Marker:
         depth: 2
@@ -33,6 +47,11 @@ body:
     children:
       - kind:
           Text: Heading 2 with leading whitespace
+    span:
+      start: 40
+      end: 76
+      start_line: 3
+      end_line: 3
   - kind:
       Marker:
         depth: 1
@@ -40,3 +59,8 @@ body:
     children:
       - kind:
           Text: Heading 1 with leading whitespace
+    span:
+      start: 79
+      end: 114
+      start_line: 4
+      end_line: 4

@@ -1,2 +1,0 @@
--{:key "value"}: Table attribute
--["item 1" "item 2"]: List attribute

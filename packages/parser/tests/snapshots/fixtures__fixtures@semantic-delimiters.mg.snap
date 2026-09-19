@@ -1,20 +1,23 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/semantic-delimiters.mg
 ---
-meta: ~
 body:
   - kind: Paragraph
     children:
       - kind:
           Text: "The quick brown fox jumped over the "
+      - kind:
+          Delimiter: Strong
         children:
           - kind:
-              Delimiter: Strong
-            children:
-              - kind:
-                  Text: lazy dog.
+              Text: lazy dog.
+    span:
+      start: 0
+      end: 49
+      start_line: 0
+      end_line: 0
   - kind:
       Delimiter: Strong
     children:
@@ -22,15 +25,29 @@ body:
         children:
           - kind:
               Text: The quick brown fox jumped over the lazy dog.
+        span:
+          start: 54
+          end: 99
+          start_line: 3
+          end_line: 3
+    span:
+      start: 51
+      end: 102
+      start_line: 2
+      end_line: 4
   - kind: Paragraph
     children:
       - kind:
           Text: "A paragraph "
+      - kind:
+          Delimiter: Strong
         children:
           - kind:
-              Delimiter: Strong
-            children:
-              - kind:
-                  Text: with soft wrapping
-          - kind:
-              Text: " in it."
+              Text: with soft wrapping
+      - kind:
+          Text: " in it."
+    span:
+      start: 104
+      end: 145
+      start_line: 6
+      end_line: 8

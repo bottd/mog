@@ -1,33 +1,43 @@
 use crate::{
     Delimiter, Marker, MarkerKind, Node, NodeKind,
     node::attribute::{parse_attributes, parse_delimiter_attributes},
+    span::Span,
     whitespace,
 };
 
 pub(super) enum Line {
     Resolved(Node),
     Block(Node),
+    // ``…: — the body is raw content rather than markup
+    Verbatim(Node),
     Row(Node),
+    Blank,
     Text,
 }
 
-pub(super) fn classify(line: &str) -> Line {
+// a verbatim block closes on a line that is nothing but the delimiter
+pub(super) fn is_verbatim_close(line: &str) -> bool {
+    whitespace::trim(line).as_bytes() == Delimiter::Verbatim.opening()
+}
+
+pub(super) fn classify(line: &str, span: Span) -> Line {
     let bytes = line.as_bytes();
     let Some(&first) = bytes.first() else {
-        return Line::Text;
+        return Line::Blank;
     };
 
     // Delimiter blocks, skips inline delimiters
-    if let Some(delimiter) = Delimiter::at(bytes, 0) {
-        let (attributes, rest) =
-            parse_delimiter_attributes(&line[2..], delimiter.attribute_boundary());
+    if let Some(delimiter) = Delimiter::at(line) {
+        let (attributes, rest) = parse_delimiter_attributes(&line[2..], delimiter);
         let rest = whitespace::trim(rest);
 
         if matches!(delimiter, Delimiter::TableHeader | Delimiter::TableRow) {
             return Line::Row(Node {
                 kind: NodeKind::Delimiter(delimiter),
                 attributes,
-                children: (!rest.is_empty()).then(|| vec![Node::raw(rest)]),
+                children: Node::raw_children(rest),
+                span: Some(span),
+                fence: None,
             });
         }
 
@@ -38,11 +48,12 @@ pub(super) fn classify(line: &str) -> Line {
             return Line::Text;
         }
 
-        return Line::Block(Node {
-            kind: NodeKind::Delimiter(delimiter),
-            attributes,
-            children: None,
-        });
+        let node = Node::new(NodeKind::Delimiter(delimiter), attributes).at(span);
+
+        return match delimiter {
+            Delimiter::Verbatim => Line::Verbatim(node),
+            _ => Line::Block(node),
+        };
     }
 
     // Structural Markers
@@ -52,14 +63,23 @@ pub(super) fn classify(line: &str) -> Line {
         let (attributes, rest) = parse_attributes(&line[depth..]);
         let rest = whitespace::trim(rest);
 
-        let node = Node {
+        let mut node = Node {
             kind: NodeKind::Marker(marker),
             attributes,
-            children: (!rest.is_empty()).then(|| vec![Node::raw(rest)]),
+            children: Node::raw_children(rest),
+            span: Some(span),
+            fence: None,
         };
 
         return match rest.is_empty() {
-            true => Line::Block(node),
+            // A block marker's span grows to its closing fence, so it keeps the
+            // opening line separately — that is where an editor inserts. A
+            // single-line marker starts without one; attaching an attribute
+            // block preserves its opening line before growing its span later.
+            true => {
+                node.fence = Some(span);
+                Line::Block(node)
+            }
             false => Line::Resolved(node),
         };
     }

@@ -1,4 +1,6 @@
-use crate::{Delimiter, whitespace};
+use crate::{whitespace, whitespace::WHITESPACE};
+
+use super::{content, push_resolved};
 use crate::{Node, NodeKind};
 
 #[derive(Default)]
@@ -17,30 +19,34 @@ impl Parser {
         self.resolved
     }
 
+    // an attribute node takes the whitespace separating it from the content,
+    // but only at the edges of its parent: inside, the space is prose
+    pub fn absorb_separator(&mut self, input: &mut &str) {
+        let open = self.stack.last();
+        let siblings = open.map_or(&self.resolved, |open| &open.children);
+        let rest = whitespace::trim_start(input);
+
+        let kept = whitespace::trim_end(&self.buffer).len();
+
+        let leading = kept == 0 && siblings.iter().all(Node::is_attributes);
+        let trailing = rest.is_empty()
+            || open.is_some_and(|open| {
+                matches!(open.kind, NodeKind::Delimiter(delimiter) if delimiter.closes(rest))
+            });
+
+        if leading || trailing {
+            self.buffer.truncate(kept);
+            *input = rest;
+        }
+    }
+
     pub fn push_node(&mut self, node: Node) {
-        let siblings = match self.stack.last_mut().or_else(|| self.resolved.last_mut()) {
-            Some(open) => open.children.get_or_insert_default(),
+        let siblings = match self.stack.last_mut() {
+            Some(open) => &mut open.children,
             None => &mut self.resolved,
         };
 
-        let attaches = matches!(
-            (siblings.last().map(|last| &last.kind), &node.kind),
-            (
-                Some(NodeKind::Link(_)),
-                NodeKind::Delimiter(Delimiter::LinkName | Delimiter::Footnote)
-            ) | (
-                Some(NodeKind::Delimiter(Delimiter::LinkName)),
-                NodeKind::Delimiter(Delimiter::Footnote)
-            )
-        );
-
-        // TODO: footnotes to document level
-        // LinkName and Footnote can attach to a preceding sibling
-        if attaches {
-            siblings.last_mut().expect("checked above").push_child(node);
-        } else {
-            siblings.push(node);
-        }
+        push_resolved(siblings, node);
     }
 
     pub fn push_char(&mut self, ch: char) {
@@ -56,23 +62,27 @@ impl Parser {
 
     pub(super) fn close_node(&mut self) {
         self.flush();
-        let mut node = self.stack.pop().expect("open node");
+        let Some(mut node) = self.stack.pop() else {
+            return;
+        };
+
         trim_node(&mut node);
         self.push_node(node);
     }
 }
 
 fn trim_node(node: &mut Node) {
-    let Some(children) = node.children.as_mut() else {
-        return;
-    };
-
-    if let Some(NodeKind::Text(text)) = children.first_mut().map(|child| &mut child.kind) {
-        text.drain(..whitespace::indent(text).min(1));
+    // at most one space, so the delimiters can be written apart from the text
+    if let Some(NodeKind::Text(text)) = content(node.children.iter_mut()).map(|edge| &mut edge.kind)
+        && text.starts_with(WHITESPACE)
+    {
+        text.drain(..1);
     }
 
-    if let Some(NodeKind::Text(text)) = children.last_mut().map(|child| &mut child.kind) {
-        let trailing = text.len() - whitespace::trim_end(text).len();
-        text.truncate(text.len() - trailing.min(1));
+    if let Some(NodeKind::Text(text)) =
+        content(node.children.iter_mut().rev()).map(|edge| &mut edge.kind)
+        && text.ends_with(WHITESPACE)
+    {
+        text.pop();
     }
 }

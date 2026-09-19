@@ -1,9 +1,8 @@
 ---
 source: packages/parser/tests/fixtures.rs
-expression: "parse(&std::fs::read_to_string(path).unwrap())"
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
 input_file: packages/parser/tests/fixtures/tables-3.mg
 ---
-meta: ~
 body:
   - kind: Table
     children:
@@ -27,6 +26,11 @@ body:
                   Text: Color
           - kind:
               Delimiter: TableCell
+        span:
+          start: 0
+          end: 41
+          start_line: 0
+          end_line: 0
       - kind:
           Delimiter: TableRow
         children:
@@ -44,6 +48,11 @@ body:
               Delimiter: TableCell
           - kind:
               Delimiter: TableCell
+        span:
+          start: 42
+          end: 71
+          start_line: 1
+          end_line: 1
       - kind:
           Delimiter: TableRow
         children:
@@ -67,6 +76,11 @@ body:
             children:
               - kind:
                   Text: Crunchy
+        span:
+          start: 72
+          end: 124
+          start_line: 2
+          end_line: 2
       - kind:
           Delimiter: TableRow
         children:
@@ -87,3 +101,13 @@ body:
                   Text: Blue
           - kind:
               Delimiter: TableCell
+        span:
+          start: 125
+          end: 166
+          start_line: 3
+          end_line: 3
+    span:
+      start: 0
+      end: 166
+      start_line: 0
+      end_line: 3

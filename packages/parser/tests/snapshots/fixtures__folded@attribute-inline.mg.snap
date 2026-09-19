@@ -1,0 +1,351 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/attribute-inline.mg
+---
+body:
+  - kind: Paragraph
+    attributes:
+      children:
+        - name: color
+          value:
+            entries:
+              - value: red
+    children:
+      - kind:
+          Text: An inline attribute block attaches to its paragraph.
+    span:
+      start: 0
+      end: 74
+      start_line: 0
+      end_line: 0
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "Inside "
+      - kind:
+          Delimiter: Strong
+        attributes:
+          children:
+            - name: weight
+              value:
+                entries:
+                  - value: 2
+        children:
+          - kind:
+              Text: a delimiter the delimiter
+      - kind:
+          Text: " is the parent."
+    span:
+      start: 76
+      end: 146
+      start_line: 2
+      end_line: 2
+  - kind:
+      Marker:
+        depth: 1
+        kind: Heading
+    attributes:
+      children:
+        - name: class
+          value:
+            entries:
+              - value: note
+    children:
+      - kind:
+          Text: A heading
+    span:
+      start: 148
+      end: 182
+      start_line: 4
+      end_line: 4
+  - kind:
+      Marker:
+        depth: 1
+        kind: Heading
+    attributes:
+      children:
+        - name: class
+          value:
+            entries:
+              - value: note
+    children:
+      - kind:
+          Text: a delimiter flush against a marker is not a chain entry
+    span:
+      start: 184
+      end: 263
+      start_line: 6
+      end_line: 6
+  - kind: Paragraph
+    attributes:
+      children:
+        - name: a
+          value:
+            entries:
+              - value: 1
+        - name: b
+          value:
+            entries:
+              - value: 2
+    children:
+      - kind:
+          Text: Separate KDL nodes with a semicolon
+    span:
+      start: 265
+      end: 319
+      start_line: 8
+      end_line: 8
+  - kind: Paragraph
+    children:
+      - kind:
+          Text: "An inline verbatim with another attribute "
+      - kind:
+          Delimiter: Verbatim
+        attributes:
+          entries:
+            - value: rust
+        children:
+          - kind:
+              Raw: let x = 1;
+      - kind:
+          Text: " stays verbatim."
+    span:
+      start: 321
+      end: 399
+      start_line: 10
+      end_line: 10
+  - kind: Table
+    children:
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            attributes:
+              children:
+                - name: align
+                  value:
+                    entries:
+                      - value: end
+            children:
+              - kind:
+                  Text: a
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: b
+        span:
+          start: 401
+          end: 435
+          start_line: 12
+          end_line: 12
+    span:
+      start: 401
+      end: 435
+      start_line: 12
+      end_line: 12
+  - kind: Paragraph
+    attributes:
+      children:
+        - name: only
+          value:
+            entries:
+              - value: attributes
+    span:
+      start: 437
+      end: 464
+      start_line: 14
+      end_line: 14
+  - kind: Table
+    children:
+      - kind:
+          Delimiter: TableRow
+        children:
+          - kind:
+              Delimiter: TableCell
+            attributes:
+              children:
+                - name: align
+                  value:
+                    entries:
+                      - value: end
+          - kind:
+              Delimiter: TableCell
+            children:
+              - kind:
+                  Text: b
+        span:
+          start: 466
+          end: 498
+          start_line: 16
+          end_line: 16
+    span:
+      start: 466
+      end: 498
+      start_line: 16
+      end_line: 16
+  - kind: Paragraph
+    children:
+      - kind:
+          Delimiter: Verbatim
+        attributes:
+          entries:
+            - ty: t
+              value: attr
+        children:
+          - kind:
+              Raw: typed stays verbatim
+    span:
+      start: 500
+      end: 533
+      start_line: 18
+      end_line: 18
+  - kind: Paragraph
+    children:
+      - kind:
+          Delimiter: Strong
+        attributes:
+          children:
+            - name: weight
+              value:
+                entries:
+                  - value: 2
+        children:
+          - kind:
+              Text: directly after the opener
+      - kind:
+          Text: " the delimiter is still the parent."
+    span:
+      start: 535
+      end: 618
+      start_line: 20
+      end_line: 20
+  - kind: Paragraph
+    children:
+      - kind:
+          Delimiter: Strong
+        attributes:
+          entries:
+            - value: attr
+        children:
+          - kind:
+              Text: on any other delimiter
+      - kind:
+          Text: " is an ordinary attribute named attr."
+    span:
+      start: 620
+      end: 689
+      start_line: 22
+      end_line: 22
+  - kind: Paragraph
+    children:
+      - kind:
+          Delimiter: Strong
+        attributes:
+          children:
+            - name: weight
+              value:
+                entries:
+                  - value: 2
+        children:
+          - kind:
+              Text: directly before the closer
+      - kind:
+          Text: " the delimiter is still the parent."
+    span:
+      start: 691
+      end: 775
+      start_line: 24
+      end_line: 24
+  - kind: Paragraph
+    attributes:
+      children:
+        - name: c
+          value:
+            entries:
+              - value: x
+    children:
+      - kind:
+          Text: "A link written across a block "
+      - kind:
+          Link: target
+        children:
+          - kind:
+              Delimiter: LinkName
+            children:
+              - kind:
+                  Text: display
+      - kind:
+          Text: " still owns its name."
+    span:
+      start: 777
+      end: 864
+      start_line: 26
+      end_line: 26
+  - kind: Paragraph
+    attributes:
+      children:
+        - name: a
+          value:
+            entries:
+              - value: 1
+        - name: b
+          value:
+            entries:
+              - value: 2
+    children:
+      - kind:
+          Text: text after two leading blocks has no leading space.
+    span:
+      start: 866
+      end: 945
+      start_line: 28
+      end_line: 28
+  - kind: Paragraph
+    children:
+      - kind:
+          Delimiter: Strong
+        attributes:
+          children:
+            - name: weight
+              value:
+                entries:
+                  - value: 2
+        children:
+          - kind:
+              Text: spaced before the closer
+      - kind:
+          Text: " leaves no empty text."
+    span:
+      start: 947
+      end: 1017
+      start_line: 30
+      end_line: 30
+  - kind: Paragraph
+    attributes:
+      children:
+        - name: c
+          value:
+            entries:
+              - value: 1
+    children:
+      - kind:
+          Text: "A spaced block between "
+      - kind:
+          Link: target
+      - kind:
+          Text: " "
+      - kind:
+          Delimiter: LinkName
+        children:
+          - kind:
+              Text: display
+      - kind:
+          Text: " leaves one space."
+    span:
+      start: 1019
+      end: 1096
+      start_line: 32
+      end_line: 32

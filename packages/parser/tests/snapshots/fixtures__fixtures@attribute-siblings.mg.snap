@@ -1,0 +1,156 @@
+---
+source: packages/parser/tests/fixtures.rs
+expression: "parse_unfolded(&std::fs::read_to_string(path).unwrap())"
+input_file: packages/parser/tests/fixtures/attribute-siblings.mg
+---
+body:
+  - kind:
+      Marker:
+        depth: 1
+        kind: Heading
+    children:
+      - kind:
+          Text: A single-line heading
+      - kind: Attributes
+        attributes:
+          children:
+            - name: class
+              value:
+                entries:
+                  - value: title
+        span:
+          start: 24
+          end: 48
+          start_line: 1
+          end_line: 3
+    span:
+      start: 0
+      end: 48
+      start_line: 0
+      end_line: 3
+    fence:
+      start: 0
+      end: 23
+      start_line: 0
+      end_line: 0
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: item one
+      - kind: Attributes
+        attributes:
+          children:
+            - name: color
+              value:
+                entries:
+                  - value: red
+        span:
+          start: 61
+          end: 83
+          start_line: 6
+          end_line: 8
+      - kind: Attributes
+        attributes:
+          children:
+            - name: weight
+              value:
+                entries:
+                  - value: 2
+        span:
+          start: 84
+          end: 103
+          start_line: 9
+          end_line: 11
+    span:
+      start: 50
+      end: 103
+      start_line: 5
+      end_line: 11
+    fence:
+      start: 50
+      end: 60
+      start_line: 5
+      end_line: 5
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Text: item two
+    span:
+      start: 104
+      end: 114
+      start_line: 12
+      end_line: 12
+  - kind:
+      Marker:
+        depth: 1
+        kind: UnorderedList
+    children:
+      - kind:
+          Marker:
+            depth: 1
+            kind: UnorderedList
+        children:
+          - kind:
+              Text: nested item
+          - kind: Attributes
+            attributes:
+              children:
+                - name: color
+                  value:
+                    entries:
+                      - value: blue
+            span:
+              start: 132
+              end: 155
+              start_line: 16
+              end_line: 18
+        span:
+          start: 118
+          end: 155
+          start_line: 15
+          end_line: 18
+        fence:
+          start: 118
+          end: 131
+          start_line: 15
+          end_line: 15
+    span:
+      start: 116
+      end: 157
+      start_line: 14
+      end_line: 19
+    fence:
+      start: 116
+      end: 117
+      start_line: 14
+      end_line: 14
+  - kind:
+      Marker:
+        depth: 1
+        kind: Heading
+    children:
+      - kind:
+          Text: A blank line releases the heading
+    span:
+      start: 159
+      end: 194
+      start_line: 21
+      end_line: 21
+  - kind: Attributes
+    attributes:
+      children:
+        - name: scope
+          value:
+            entries:
+              - value: document
+    span:
+      start: 196
+      end: 223
+      start_line: 23
+      end_line: 25
