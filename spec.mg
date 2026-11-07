@@ -1,252 +1,133 @@
-``meta:
+``attr:
 title "Mog Syntax Specification"
 authors "Drake Bott"
-version 0.1
+version "0.2.0"
 ``
 
-# Mog Syntax Specification v0.1
+# Mog Syntax Specification
 
 ## Introduction
 
-Mog is a markup syntax designed for rich, interconnected documents:
-knowledge bases, wikis, and publishing on the web. It draws from
-Markdown, Org, and Neorg, but diverges with two-character delimiters,
-explicit nesting, and inline attributes. Together these create
-a unified grammar for expression. This document specifies the structure
-and rules for markup in a Mog document.
+Mog is a markup language designed for rich, interconnected documents:
+knowledge bases, wikis, and agentic workflows. Drawing from Markdown,
+Org, and Neorg, the syntax uses two-character delimiters, explicit
+nesting, and KDL attributes.
+
+This document specifies the structure and rules for markup in a Mog
+document. How a parsed document is resolved, rendered, or otherwise
+processed is outside its scope.
 
 ## Table of Contents
 
-#| Section || Title                        ||
--| 1       || Document Structure           ||
--| 2       || Structural Markers           ||
--| 3       || Attributes                   ||
--| 4       || Semantic Delimiters          ||
+#| 1   || Document Structure         ||
+-| 1.1 || Text Encoding              ||
+-| 1.2 || Whitespace and Blank Lines ||
+-| 1.3 || Paragraphs                 ||
+#| 2   || Structural Markers         ||
+-| 2.1 || Depth                      ||
+#| 3   || Semantic Delimiters        ||
+-| 3.1 || Verbatim                   ||
+-| 3.2 || Tables                     ||
+-| 3.3 || Links                      ||
+-| 3.4 || Annotations                ||
+#| 4   || Boundaries                 ||
+-| 4.1 || Blocks                     ||
+-| 4.2 || Free                       ||
+-| 4.3 || Trimming                   ||
+-| 4.4 || Escapes                    ||
+#| 5   || Attributes                 ||
+-| 5.1 || Inline Attributes          ||
+-| 5.2 || Verbatim Attributes        ||
+-| 5.3 || Duplicate Attributes       ||
 
 ## 1 Document Structure
 
 ### 1.1 Text Encoding
 
-Documents are UTF-8 encoded files with a ``.mg`` file extension. A
-leading byte-order mark (U+FEFF) is stripped by the parser and not
-considered document content. Line endings can be LF (U+000A) or CRLF
-(U+000D U+000A), parsing normalizes to LF.
+A document is a UTF-8 encoded file with a ``.mg`` file extension.
+Leading byte-order marks (U+FEFF) are skipped by the parser. Line
+endings can be LF (U+000A) or CRLF (U+000D U+000A); parsing normalizes
+to LF.
 
-### 1.2 Whitespace
+### 1.2 Whitespace and Blank Lines
 
-The following Unicode characters are considered whitespace:
+The following Unicode characters are whitespace:
 
-- Tab (0x09)
-- Space (0x20)
+- Tab (U+0009)
+- Space (U+0020)
 
-Whitespace is not used to structure Mog. Leading and trailing whitespace
-is trimmed when parsing a document. The following headings parse
-identically:
-
-``mog:
-# My heading
-  # My heading  
-``
+A line is blank when it is empty or contains only whitespace.
 
 ### 1.3 Paragraphs
 
 A paragraph is a continuous sequence of text lines. Paragraphs are
-terminated by a blank line, structural marker, or the end of the
-document. Line breaks within a paragraph are parsed as soft wraps.
-
-### 1.4 Metadata
-
-Metadata may appear at the beginning of a document, delimited by two
-hyphens. Data is formatted in [[https://kdl.dev]]((KDL)) syntax:
-
-``mog:
-\``meta:
-title "My Document"
-authors "John" "Jane"
-date "2026-04-15"
-version 1
-\``
-``
-
-### 1.5 Escape Sequences
-
-A backslash immediately preceding a delimiter or structural marker
-escapes it, rendering the delimiter or marker literal. A backslash in
-any other position is itself literal and requires no escaping.
-
-``mog:
-\**this is not bold\**
-``
+terminated by a blank line, structural marker (2), or the end of the
+document. Line breaks within a paragraph are soft wraps: when parsed,
+each line is joined by a single space.
 
 ## 2 Structural Markers
 
-Structural markers are used to give documents structure. These markers
-open the line they are used on, ignoring leading whitespace. Structural
-markers are repeated to explicitly indicate nesting. Using a heading
-``#`` marker once is a top-level heading, two markers ``##`` represent
-a subheading and so on. These rules apply to all structural markers.
+Structural markers open a line and give the following content a type.
 
-#| Marker   || AST Node        || Semantic Meaning             ||
+#| Marker   || Node            || Semantic Meaning             ||
 -| ``#``    || heading         || Section heading              ||
 -| ``-``    || unordered-list  || Unordered list item          ||
 -| ``.``    || ordered-list    || Ordered list item            ||
 -| ``>``    || blockquote      || Blockquote                   ||
--| ``=``    || thematic-break  || Thematic break               ||
+-| ``=``    || free            || Free                         ||
 
-An optional whitespace character can be placed between a marker
-and content. This whitespace is trimmed when present.
+### 2.1 Depth
 
-### 2.1 Nesting
-
-All structural markers can nest. Nesting is expressed through marker
-repetition. A repeated marker indicates a sub-entity:
+All structural markers have a depth expressed through marker
+repetition. A repeated marker is one level deeper:
 
 ``mog:
 # Heading 1
 ## Heading 2
 ### Heading 3
- ## Heading 2 with leading whitespace
-  # Heading 1 with leading whitespace
 ``
 
-### 2.2 Blocks
+Depth is not used to nest nodes; containment is expressed through
+block syntax (4.1).
 
-Structured text can span multiple lines. A structural marker alone on
-a line with no content opens a block of its type, terminated with a
-matching marker of the same depth on its own line.
+## 3 Semantic Delimiters
 
-``mog:
-- Reading notes
---
-Chapter 3 was particularly relevant:
- >
-  quote from chapter 3
- >
---
-``
+Semantic delimiters mark or group text to give it meaning, style, or
+structure. All delimiters open and close with two characters.
+Delimiters of different kinds can nest, but a delimiter cannot nest
+within itself.
 
-Leading whitespace is trimmed while parsing structural markers. Authors
-can use it to visually group text without affecting nesting depth. The
-following block is equivalent to the above example:
-
-``mog:
-- Reading notes
---
-Chapter 3 was particularly relevant:
->
-quote from chapter 3
->
---
-``
-
-### 2.3 Tasks
-
-A task marker can be placed after any structural marker except ``=``
-thematic breaks. Tasks are marked using square brackets: ``[ ]``. The
-status of a task is determined by the character between brackets.
-
-#| Marker    || Status      ||
--| ``o``     || Undone      ||
--| ``.``     || Done        ||
--| ``>``     || In progress ||
--| ``?``     || Uncertain   ||
--| ``x``     || Cancelled   ||
-
-``mog:
-->: Grocery shopping
---.: Eggs
--->: Milk
---?: Oat or almond?
--o: Clean kitchen
--x: Return sweater
-``
-
-``mog:
--o:due=(date)2026-07-29: Renew passport
-``
-
-## 3 Attributes
-
-Attributes are generic data attached to a marker or delimiter,
-terminated using a colon. After the colon an optional whitespace
-character is trimmed if present.
-
-Attribute names may contain any character except whitespace and the
-following reserved characters:
-
-- ``:`` (0x3A)
-- ``(`` (0x28)
-- ``)`` (0x29)
-- ``[`` (0x5B)
-- ``]`` (0x5D)
-- ``{`` (0x7B)
-- ``}`` (0x7D)
-- ``|`` (0x7C)
-- ``;`` (0x3B)
-- ``"`` (0x22)
-- ``'`` (0x27)
-- ``,`` (0x2C)
-- ``~`` (0x7E)
-- ``=`` (0x3D)
-
-All other printable characters, including digits and Unicode letters,
-are permitted.
-
-``mog:
-##red:My Heading
-##red: My Heading
-
-- list item with **red: BOLD** content
-``
-
-### 3.1 Attribute Chains
-
-Additional attributes are added as a chain beginning from the
-terminating colon of the prior attribute. Attribute chains must stay on
-the same line as their parent. A newline or whitespace character marks
-the beginning of text content.
-
-``mog:
-##red:underline: My Heading
--o:due=(date)2026-07-29:owner="Jane": Renew passport
-``
-
-## 4 Semantic Delimiters
-
-Semantic delimiters are used both inline and as blocks. All delimiters
-open and close with two characters. Delimiters of different kinds can
-nest, but delimiters cannot nest within themselves. Leading and trailing
-whitespace is trimmed within semantic delimiters.
-
-#| Delimiter      || AST Node        || Semantic Meaning    ||
+#| Delimiter      || Node            || Semantic Meaning    ||
 -| ``**``         || strong          || Bold                ||
 -| ``__``         || italic          || Italic              ||
--| `` `` ``       || verbatim        || Literal text        ||
+-| \``            || verbatim        || Literal text        ||
 -| ``~~``         || strikethrough   || Struck-through text ||
+-| ``::``         || free            || Free                ||
 -| ``#|``         || table-header    || Table header        ||
 -| ``-|``         || table-row       || Table row           ||
 -| ``||``         || table-cell      || Table cell          ||
--| ``[[ ]]``      || link            || Link target         ||
--| ``(( ))``      || link-name       || Link name           ||
--| ``{{ }}``      || link-footnote   || Footnote content    ||
+-| ``[[ ]]``      || hyperlink       || Hyperlink target    ||
+-| ``<< >>``      || slot-link       || Slot link target    ||
+-| ``(( ))``      || alias           || Alternate form      ||
+-| ``{{ }}``      || note            || Additional note     ||
 
 ``mog:
 The quick brown fox jumped over the **lazy dog.**
 
-**
-The quick brown fox jumped over the lazy dog.
-**
-
-A paragraph **with
-soft wrapping** in
+A paragraph __with
+soft wrapping__ in
 it.
 ``
 
-### 4.1 Verbatim
+### 3.1 Verbatim
 
-Text between verbatim delimiters is preserved literally. To indicate a
-syntax for highlighting when rendered, a lang attribute is attached to
-the marker or delimiter.
+Text between verbatim delimiters is preserved literally. A backslash
+escape applies only to verbatim delimiters; all other text, including
+backslashes, is preserved. When verbatim content ends with a backslash,
+place whitespace before the closing delimiter; it is trimmed (4.3).
+
+To specify a syntax, a language attribute (5.1) may be attached to the
+opening delimiter:
 
 ``mog:
 Some code with \``python: print("Hello, world!")\``
@@ -257,8 +138,8 @@ def greet(name):
 \``
 ``
 
-Each line of a verbatim block is dedented by the whitespace preceding
-the opening verbatim delimiter.
+Each line of a verbatim block (4.1) is dedented by the whitespace
+preceding the opening verbatim delimiter:
 
 ``mog:
 -
@@ -270,19 +151,19 @@ the opening verbatim delimiter.
 -
 ``
 
-When parsed, the verbatim text is dedented:
+When parsed, the remaining whitespace is preserved:
 
 ``python:
 def greet(name):
   print(f"Hello, {name}!")
 ``
 
-### 4.2 Tables
+### 3.2 Tables
 
-Tables are constructed using ``#|`` table header and ``-|`` table row
-delimiters. Within a row, cells are delimited using ``||``. Table cells
-can include semantic delimiters for presentation of tabulated data. A
-table is terminated by an empty line.
+Tables are constructed using table header ``#|`` and table row ``-|``
+delimiters. Within a row, cells are delimited using table cell ``||``.
+Each cell may include semantic delimiters. A table is terminated by a
+blank line (1.2).
 
 ``mog:
 #| Name       || Type      || Color    ||
@@ -297,10 +178,9 @@ Table rows may share a line.
 #| Name || Type || Color || -| Banana || Fruit || Yellow ||
 ``
 
-Table rows are not required to have the same number of cells. The number
-of columns in a table is determined by the row with the most cells.
-Missing cells are parsed as empty. Implementations may warn on row
-length mismatch.
+Table rows are not required to have the same number of cells. The
+number of columns in a table is determined by the row with the most
+cells. Missing cells are parsed as empty.
 
 ``mog:
 #| Name       || Type      || Color    ||
@@ -317,7 +197,7 @@ Tables may begin without a header:
 -| Blueberry  || Fruit     || Blue     ||
 ``
 
-A table may have multiple or mid-table header rows:
+Tables may have multiple header rows in any position:
 
 ``mog:
 #|            ||           ||          || Texture ||
@@ -328,54 +208,252 @@ A table may have multiple or mid-table header rows:
 -| Carrot     || Vegetable || Orange   || Crunchy ||
 ``
 
-### 4.3 Links
+### 3.3 Links
 
-Links ``[[  ]]`` are formatted with square brackets. A link can be bare,
-or it may have a name ``((  ))`` and footnote ``{{  }}``.
+A link is either a hyperlink ``[[ ]]`` or a slot link ``<< >>``. A
+hyperlink is a reference the reader may follow to another resource. A
+slot link is filled by its target, such as an image or template
+variable. Links are inline only; no block form of either kind is valid.
 
 ``mog:
 - [[https://kdl.dev]]
-- [[https://kdl.dev]]((KDL))
-- [[https://kdl.dev]]((KDL)){{ A node-based document language }}
+- [[spec.mg]]
+
+- <<embedded-img.png>>
+- <<my-note.mg>>
 ``
 
-Link resolution is driven by attributes. A bare link is a document
-reference and is resolved against filenames and metadata ``title``
-fields. Headings can be referenced using the ``#`` attribute. External
-targets are identified by their protocol attribute.
+Attributes (5.1) on links conventionally declare the target's namespace:
 
 ``mog:
-[[recipe]]               Document reference
-[[#:Ingredients]]        Heading in current document
-[[https://kdl.dev]]      External via protocol attribute
+- [[#: 3.3 Links]]      heading namespace
+- <<$:note.mg>>         project root namespace
+- [[spell:Fireball]]    spell namespace
+- <<ingredient:tomato>> ingredient namespace
 ``
 
-Link transclusion is indicated using the transclude ``!`` attribute.
-Transclusion works for both documents and media.
+### 3.4 Annotations
+
+Annotations are alias ``(( ))`` and note ``{{ }}`` nodes. An alias
+carries an alternate name or creates a named anchor point. A note is
+for any attached context such as footnotes and comments.
+
+Annotations are commonly attached to links:
 
 ``mog:
-[[!:recipe]]       Document Transclusion
-[[!:image.png]]    Image Transclusion
+- [[https://kdl.dev]]((KDL doc site))
+- [[https://kdl.dev]]{{
+    KDL is a small, pleasant document language with XML-like node...
+  }}
+- [[https://kdl.dev]]((KDL doc site)){{a cuddly document language}}
 ``
 
-### 4.4 Footnotes
-
-When footnote contents do not fit inline, they may be linked from
-elsewhere in the document:
+Annotations can attach to a span or another annotation:
 
 ``mog:
-A good marinara starts with San Marzano
-[[tomato]]((tomatoes)) and a generous amount
-of olive oil.
-
-[[tomato]]{{ A fruit not a vegetable }}
+- ::Groceries::{{ needed for [[marinara sauce]] }}
+-- ::tomato::((San Marzano tomato))
+-- olive oil
 ``
 
-Footnotes can appear without a link. If unattached, a footnote is
-indexed by its position in the document.
+When an annotation appears inline with no preceding delimiter to attach
+to, an anchor is registered at its position. For notes the anchor is
+indexed by document order:
 
 ``mog:
 A good marinara starts with San Marzano
 tomato{{ A tomato is a fruit not a vegetable }} and a generous amount
 of olive oil.
 ``
+
+The prior example's note is indexed as ``1``. When the annotation is an
+alias or note with attached alias, the anchor is keyed by the alias
+name:
+
+``mog:
+A good marinara starts with {{ A tomato is a fruit not a vegetable }}((San Marzano tomato))
+and a generous amount of olive oil.
+``
+
+An alias annotation may be used to name an anchor point for a following
+note to target:
+
+``mog:
+A good marinara starts with ((San Marzano tomato)) and a generous
+amount of olive oil.
+
+{{ A fruit not a vegetable }}((San Marzano tomato))
+``
+
+## 4 Boundaries
+
+### 4.1 Blocks
+
+A marker or delimiter on an otherwise blank line opens a block. A block
+is terminated by the same marker or delimiter with no attributes (5) on
+an otherwise blank line.
+
+``mog:
+**
+The quick brown fox jumped over the lazy dog.
+**
+
+# Reading notes
+--
+Chapter 3 was particularly relevant:
+ >
+ __
+  quote from chapter 3
+ __
+ >
+--
+``
+
+### 4.2 Free
+
+A free node has no inherent semantic type. It exists as a structural
+building block which carries attributes and annotations. The free
+marker ``=`` denotes a line or block; the free delimiter ``::`` marks a
+span.
+
+``mog:
+= A free line
+
+=
+ A free block
+
+ can group content across lines
+=
+
+The sauce needs ::San Marzano::((a plum tomato)).
+``
+
+### 4.3 Trimming
+
+Whitespace is not used to structure Mog syntax. Leading and trailing
+whitespace is trimmed when parsing a document. The following headings
+parse identically:
+
+``mog:
+# My heading
+  # My heading  
+      #     My heading  
+#My heading          
+``
+
+Leading and trailing whitespace is trimmed within semantic delimiters,
+except for verbatim content, which is trimmed only at its delimiters;
+each contained line is dedented, not trimmed (3.1). The following bold
+text spans contain the same parsed content:
+
+``mog:
+**    bold statement**
+**bold statement    **
+``
+
+### 4.4 Escapes
+
+A backslash escapes the character or run of repeated characters that
+follows. Backslashes are the exception: ``\\ `` escapes a single
+backslash, never a run. Within verbatim content, only a verbatim
+delimiter is escaped (3.1).
+
+``mog:
+\**this is not bold\**
+\\**this is bold**
+\\\**this is not bold\**
+
+\### this is not a heading
+\---- this is not a list item
+``
+
+## 5 Attributes
+
+Attributes attach generic KDL v2 data to nodes. An attribute can attach
+inline or as a block. Inline attributes are terminated with a colon.
+
+### 5.1 Inline Attributes
+
+Inline attributes are KDL Nodes, separated and terminated by a colon
+``:``. Each attribute may have a tag, name, and value. In a KDL
+Document, ``key=value`` represents a node property. For Mog's
+inline attributes an equals ``=`` instead names the node. This allows
+inline and verbatim attributes (5.2) to interoperate.
+
+``mog:
+-size=medium: T-Shirt
+-
+ \``attr:
+ size large
+ \``
+ Vintage T-Shirt with a block of text for its backstory
+-
+``
+
+Both of these shirt notes carry a size attribute of the same format. If
+the first T-Shirt was converted into a block using ``size medium`` to
+store size, the representation of data is the same.
+
+Additional attributes may be added as a chain beginning from the
+terminating colon of the prior attribute. Attribute chains must stay on
+the same line as their parent. A newline or whitespace character marks
+the beginning of text content.
+
+``mog:
+-info: Item with "info" attribute
+-info:green: Attribute chain
+``
+
+When a node has multiple attributes that share a key or tag, the values
+can be comma ``,`` separated. Key and tag are repeated for each repeated
+value:
+
+``mog:
+-(season)fall,winter:size=medium,small: Knit Beanie
+
+## Equivalent Attributes
+-(season)fall:(season)winter:size=medium:size=small: Knit Beanie
+``
+
+### 5.2 Verbatim Attributes
+
+Verbatim attributes are declared by attaching an ``attr`` attribute to
+an opening verbatim delimiter. A verbatim attribute is parsed as a KDL
+Document, then attached to the containing node. At the top level, the
+containing node is the document.
+
+``mog:
+\``attr:
+title "My Document"
+authors "John Doe"
+\``
+
+=
+\``attr:
+title "My Node"
+authors "Also John Doe"
+\``
+=
+``
+
+### 5.3 Duplicate Attributes
+
+When attributes share the same name they are not deduplicated. Instead,
+all attributes are stored in document order.
+
+``mog:
+\``attr:
+authors "John"
+\``
+
+-authors=James:authors=Jamie: Item
+
+\``attr:
+authors "Jane"
+\``
+``
+
+This document has two ``authors`` attributes, ``John`` and ``Jane``.
+The list node additionally has two separate ``authors`` attributes,
+``James`` and ``Jamie``. Attributes with duplicate names are not merged
+or overridden.
