@@ -28,7 +28,10 @@
           programs = {
             nixpkgs-fmt.enable = true;
             rustfmt.enable = true;
+            mdformat.enable = true;
           };
+
+          settings.formatter.mdformat.includes = pkgs.lib.mkForce [ "README.md" ];
         };
 
         pre-commit-check = pre-commit-hooks.lib.${system}.run {
